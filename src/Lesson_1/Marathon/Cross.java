@@ -1,16 +1,26 @@
 package Lesson_1.Marathon;
 
 public class Cross  {
-    private Obstacle obstacles[] = {new Wall(10), new Water(10)};
+    private Obstacle[] obstacles; // = {new Wall(10), new Water(10)};
 
-    public Cross(Obstacle[] obstacle) {        this.obstacles = obstacle;    }
+    public Cross(Obstacle... obstacle) {        this.obstacles = obstacle;    }
 
-    public void doIt(Competitor... competitor) {
-        for (int c = 0; c < competitor.length && c.isOnDistance(); c++) {
+    public void doIt(Team team) {
+        Competitor[] competitor = team.getTeam();
+        for (int c = 0; c < competitor.length && competitor[c].isOnDistance(); c++) {
             for (int o = 0; o < obstacles.length; o++) {
-                o.doIt(c);
+                obstacles[o].doIt( competitor[c] );
             }
-            c.info();
+            competitor[c].info();
+            c++;
+        }
+    }
+
+    public void showResult(Team team) {
+        System.out.println("Название команды: " + team.getCommandName());
+        Competitor[] competitor = team.getTeam();
+        for (int c = 0; c < competitor.length && competitor[c].isOnDistance(); c++) {
+            competitor[c].info();
             c++;
         }
     }

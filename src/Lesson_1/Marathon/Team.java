@@ -2,11 +2,15 @@ package Lesson_1.Marathon;
 
 public class Team {
     private Competitor[] teamMembers;
-    private String commandName;
+    private String teamName;
 
-    public Team (String commandName, Competitor ... teamMembers) {
-        this.commandName = commandName;
+    public Team (String teamName, Competitor ... teamMembers) {
+        this.teamName = teamName;
         this.teamMembers = teamMembers;
+    }
+
+    public Competitor[] getTeam () {
+        return teamMembers;
     }
 
     public Competitor[] GetTeamMember () {
@@ -14,9 +18,9 @@ public class Team {
     }
 
     public void setCommandName(String commandName) {
-        this.commandName = commandName;
+        this.teamName = commandName;
     }
     public String getCommandName() {
-        return commandName;
+        return teamName;
     }
 }
