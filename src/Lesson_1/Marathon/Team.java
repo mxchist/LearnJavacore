@@ -10,17 +10,13 @@ public class Team {
     }
 
     public Competitor[] getTeam () {
-        return teamMembers;
-    }
-
-    public Competitor[] GetTeamMember () {
         return this.teamMembers;
     }
 
     public void setCommandName(String commandName) {
         this.teamName = commandName;
     }
-    public String getCommandName() {
+    public String getTeamName() {
         return teamName;
     }
 }
