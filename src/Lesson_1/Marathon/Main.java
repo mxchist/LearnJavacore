@@ -2,8 +2,8 @@ package Lesson_1.Marathon;
 
 public class Main {
     public static void main(String[] args) {
-        Team myTeam = new Team ({"Хуман", "Боб"}, {"Кот", "Барсик"}, {"Пес", "Бобик"}, {"Хуман", "Женя"});
-        //Team myTeam = new Team (competitors);
+        String[][] competitiors = {{"Хуман", "Боб"}, {"Кот", "Барсик"}, {"Пес", "Бобик"}, {"Хуман", "Женя"}};
+        Team myTeam = new Team (competitiors);
 
         //Competitor[] competitors = {new Human("Боб"), new Cat("Барсик"), new Dog("Бобик")};
         Obstacle[] course = {new Cross(80), new Wall(2), new Wall(1), new Cross(120)};
