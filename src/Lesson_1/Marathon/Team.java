@@ -5,6 +5,6 @@ public class Team {
     private Competitor competitors [];
 
     public Team () {
-        Cat cat1 = new Cat ("Барсик", )
+        //Cat cat1 = new Cat ("Барсик", )
     }
 }
