@@ -27,7 +27,7 @@ public class testClass {
         ThreadClass tc1 = new ThreadClass(a1);
         ThreadClass tc2 = new ThreadClass(a2);
         float [] res1, res2, res;
+        res1 = res2 = new float[size/2];
 
-        
     }
 }
