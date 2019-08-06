@@ -1,21 +1,45 @@
 package multithreading;
-import java.lang.Math;
 
-public class MainClass {
-    static final int size = 10000000;
-    static final int h = size/2;
-    static float[] arr = new float [size];
+class MyClass implements Runnable {
+    String thrdName;
 
-    static void simpleMethod() {
-        long a = System.currentTimeMillis();
-        for (int i = 0; i < size; i++) {
-            arr[i] = 1;
-            arr[i] = (float)(arr[i] * Math.sin(0.2f + i/5) * Math.cos(0.2f + i/5) * Math.cos(0.4f + i/2));
-        }git sta
-        System.out.printf("Время работы - %e милисекунд", (float)(System.currentTimeMillis() - a) );
+    MyClass(String name) {
+        thrdName = name;
     }
 
-    public static  void main(String ... args) {
-        simpleMethod();
+    // Точка входа в поток.
+    public void run() {
+        System.out.println(thrdName + " - запуск");
+        try {
+            for (int count = 0; count < 10; count++) {
+                Thread.sleep(400);
+                System.out.println("B " + thrdName +
+                        ", счетчик: " + count);
+            }
+        } catch (InterruptedException exc) {
+            System.out.println(thrdName + " - прерван");
+        }
+        System.out.println(thrdName + " - завершение");
+    }
+}
+
+class UseThreads {
+    public static void main(String args[]) {
+        System.out.println("Зaпycк основного потока");
+        // Сначала создать объект типа MyThread.
+        MyClass mt = new MyClass("Child #1");
+        // Затем сформировать поток на основе этого объекта.
+        Thread newThrd = new Thread(mt);
+// Наконец, начать выполнение потока
+        newThrd.start();
+        for (int i = 0; i < 50; i++) {
+            System.out.print(".");
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ехс) {
+                System.out.println("Прерывание основного потока");
+            }
+        }
+        System.out.println("Завершение основного потока");
     }
 }
