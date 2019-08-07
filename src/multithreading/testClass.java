@@ -1,5 +1,6 @@
 package multithreading;
 import java.lang.Math;
+import java.util.Random;
 
 public class testClass {
     static final int size = 10000000;
@@ -12,12 +13,20 @@ public class testClass {
             arr[i] = 1;
             arr[i] = (float)(arr[i] * Math.sin(0.2f + i/5) * Math.cos(0.2f + i/5) * Math.cos(0.4f + i/2));
         }
-        System.out.printf("Время работы - %f милисекунд", (float) (System.currentTimeMillis() - a));
+        System.out.printf("Время работы - %f милисекунд\n", (float) (System.currentTimeMillis() - a));
+
+        int[] n = {3819651, 1556668, 3217037, 841715, 1159890, 9781837, 9154101, 7549502, 8755695, 8677778};
+        for (int i : n) {
+            System.out.print(arr[i] + "\t");
+        }
+        System.out.println();
     }
 
     public static  void main(String ... args) {
-//        simpleMethod();
+        simpleMethod();
 
+        System.out.println("\n" + "Вычисление массива через потоки.");
+        long a = System.currentTimeMillis();
         float[] a1 = new float[size/2];
         float[] a2 = new float[size/2];
 
@@ -28,6 +37,20 @@ public class testClass {
         ThreadClass tc2 = new ThreadClass(a2);
         float [] res1, res2, res;
         res1 = res2 = new float[size/2];
+        res = new float[size];
 
+        res1 = tc1.getArr();
+        res2 = tc2.getArr();
+
+        System.arraycopy(res1, 0, res, 0, h);
+        System.arraycopy(res1, 0, res, h, h);
+
+        System.out.printf("Время работы - %f милисекунд\n", (float) (System.currentTimeMillis() - a));
+
+        int[] n = {3819651, 1556668, 3217037, 841715, 1159890, 9781837, 9154101, 7549502, 8755695, 8677778};
+        for (int i : n) {
+            System.out.print(arr[i] + "\t");
+        }
+        System.out.println();
     }
 }
