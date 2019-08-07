@@ -23,10 +23,32 @@ public class testClass {
     }
 
     public static  void main(String ... args) {
-        simpleMethod();
+//        simpleMethod();
 
         System.out.println("\n" + "Вычисление массива через потоки.");
         long a = System.currentTimeMillis();
+
+        float[] res1, res2, res;
+        res1 = res2 = new float[size/2];
+        res = new float[size];
+
+        int lbegin, lend = 0;
+        int threadQty = 6;
+
+        for (int l =0; l < threadQty; l++) {
+            long b = System.currentTimeMillis();
+            lbegin = lend;
+            lend = lbegin + size/threadQty - 1;
+            if (lend > arr.length) lend = arr.length - 1;
+
+            float[] tempArray = new float[lend - lbegin];
+            System.arraycopy(arr,lbegin,tempArray, 0, lend - lbegin);
+            ThreadClass tempThread = new ThreadClass(tempArray);
+            System.arraycopy(tempArray, lbegin);
+
+            System.out.printf("Время цикла - %f милисекунд\n", (float) (System.currentTimeMillis() - b));
+        }
+
         float[] a1 = new float[size/2];
         float[] a2 = new float[size/2];
 
@@ -35,9 +57,6 @@ public class testClass {
 
         ThreadClass tc1 = new ThreadClass(a1);
         ThreadClass tc2 = new ThreadClass(a2);
-        float [] res1, res2, res;
-        res1 = res2 = new float[size/2];
-        res = new float[size];
 
         res1 = tc1.getArr();
         res2 = tc2.getArr();
