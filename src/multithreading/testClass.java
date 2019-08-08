@@ -29,7 +29,6 @@ public class testClass {
         long a = System.currentTimeMillis();
 
         float[] res1, res2, res;
-        res1 = res2 = new float[size/2];
         res = new float[size];
 
         int lbegin, lend = 0;
@@ -44,7 +43,8 @@ public class testClass {
             float[] tempArray = new float[lend - lbegin];
             System.arraycopy(arr,lbegin,tempArray, 0, lend - lbegin);
             ThreadClass tempThread = new ThreadClass(tempArray);
-            System.arraycopy(tempArray, lbegin);
+            res1 = tempThread.getArr();
+            System.arraycopy(tempArray, lbegin, res, lend, lend - lbegin);
 
             System.out.printf("Время цикла - %f милисекунд\n", (float) (System.currentTimeMillis() - b));
         }
