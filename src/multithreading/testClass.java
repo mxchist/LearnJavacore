@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class testClass {
     static final int size = 10000000;
-    static final int h = size/2;
     static float[] arr = new float [size];
 
     static void simpleMethod() {
@@ -35,17 +34,17 @@ public class testClass {
         int lend = -1;
         int threadQty = 6;          //Количество потоков
 
-        for (int l =1; l <= threadQty; l++) {
+        for (int l =1; lend + 1 < size - 1 ; l++) {
             long b = System.currentTimeMillis();
-            lbegin = lend +1;
+            lbegin = lend + 1;
             lend = lbegin + size/threadQty;
-            if (lend >= arr.length) lend = arr.length - 1;
+            if (lend >= arr.length) lend = size - 1;
 
             float[] tempArray = new float[lend - lbegin];
             System.arraycopy(arr,lbegin,tempArray, 0, lend - lbegin);
             ThreadClass tempThread = new ThreadClass(tempArray);
             res1 = tempThread.getArr();
-            System.arraycopy(tempArray, lbegin, res, lend, lend - lbegin + 1);
+            System.arraycopy(res1, 0, res, lbegin, lend - lbegin);
 
             System.out.printf("Время цикла - %f милисекунд\n", (float) (System.currentTimeMillis() - b));
         }
