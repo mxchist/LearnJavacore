@@ -15,11 +15,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ThreadClass.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ThreadClass.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/multithreading/ThreadClass.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
-              <caret line="20" column="3" lean-forward="false" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
+              <caret line="20" column="47" lean-forward="true" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -35,7 +35,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AnotherNewClass.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AnotherNewClass.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/multithreading/AnotherNewClass.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
@@ -495,14 +495,6 @@
     <entry file="file://$PROJECT_DIR$/src/Lesson_1/Marathon/Cross.java" />
     <entry file="file://$PROJECT_DIR$/src/Lesson_1/Marathon/Main.java" />
     <entry file="file://$PROJECT_DIR$/src/multithreading/MainClass.java" />
-    <entry file="file://$PROJECT_DIR$/src/multithreading/AnotherNewClass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="32" lean-forward="false" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/multithreading/testClass.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -514,7 +506,15 @@
     <entry file="file://$PROJECT_DIR$/src/multithreading/ThreadClass.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
-          <caret line="20" column="3" lean-forward="false" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
+          <caret line="20" column="47" lean-forward="true" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/multithreading/AnotherNewClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="32" lean-forward="false" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
           <folding />
         </state>
       </provider>
