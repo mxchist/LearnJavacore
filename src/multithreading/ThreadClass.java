@@ -20,7 +20,7 @@ public class ThreadClass implements Runnable {
 //        System.out.println("Начинаем поток");
         for (int i = 0; i < partialSize; i++) {
             arr[i] = 1;
-            arr[i] = (float)( Math.sin(0.2f + (lbegin + i)/5) * Math.cos(0.2f + (lbegin + i)/5) * Math.cos(0.4f + (lbegin + i)/2));
+            arr[i] = (float)(arr[i] * Math.sin(0.2f + (lbegin + i)/5) * Math.cos(0.2f + (lbegin + i)/5) * Math.cos(0.4f + (lbegin + i)/2));
         }
     }
 
@@ -32,11 +32,4 @@ public class ThreadClass implements Runnable {
         return this.arr;
     }
 
-//    public float[] operateArray() {
-//        Thread tr1 = new Thread(new Runnable() {
-//            public void run() {
-//                System.out.println();
-//            }
-//        })
-//    }
 }
