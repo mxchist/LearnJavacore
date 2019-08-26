@@ -2,6 +2,8 @@ package multithreading;
 
 public class AnotherNewClass {
     public static void main (String ... args) {
+        System.out.printf("%12.3f", 1e1);
+
         int arr1[] = new int[10];
         int arr2[] = {1,2,3,4,5,6,7,8,9,10};
         System.arraycopy(arr2,0,arr1,0,8);

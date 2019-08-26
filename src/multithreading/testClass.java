@@ -16,7 +16,7 @@ public class testClass {
 
         int[] n = {3819651, 1556668, 3217037, 841715, 1159890, 9781837, 9154101, 7549502, 8755695, 8677778};
         for (int i : n) {
-            System.out.print(arr[i] + "\t");
+            System.out.printf("%12.8f", arr[i]);
         }
         System.out.println();
     }
@@ -38,22 +38,28 @@ public class testClass {
             long b = System.currentTimeMillis();
             lbegin = lend + 1;
             lend = lbegin + size/threadQty;
-            if (lend >= arr.length) lend = size - 1;
+            if (lend >= res.length) lend = size - 1;
 
             float[] tempArray = new float[lend - lbegin];
-            System.arraycopy(arr,lbegin,tempArray, 0, lend - lbegin);
+            System.arraycopy(res,lbegin,tempArray, 0, lend - lbegin);
             ThreadClass tempThread = new ThreadClass(tempArray);
+            try {
+                tempThread.thrd.join();
+            }
+            catch (InterruptedException exc) {
+                exc.printStackTrace();
+            }
             res1 = tempThread.getArr();
             System.arraycopy(res1, 0, res, lbegin, lend - lbegin);
 
-            System.out.printf("Время цикла - %f милисекунд\n", (float) (System.currentTimeMillis() - b));
+//            System.out.printf("Время цикла - %f милисекунд\n", (float) (System.currentTimeMillis() - b));
         }
 
         System.out.printf("Время работы - %f милисекунд\n", (float) (System.currentTimeMillis() - a));
 
         int[] n = {3819651, 1556668, 3217037, 841715, 1159890, 9781837, 9154101, 7549502, 8755695, 8677778};
         for (int i : n) {
-            System.out.print(res[i] + "\t");
+            System.out.printf("%12.8f", res[i]);
         }
         System.out.println();
     }
