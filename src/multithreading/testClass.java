@@ -5,15 +5,19 @@ import java.util.Random;
 public class testClass {
     static final int size = 10000000;
     static float[] arr = new float [size];
-        static int[] n = {0,1, 3819646, 3819647, 3819648, 3819649, 3819650, 3819651, 3819652, 3819653, 3819654, 3819655};
+    static int threadQty = 6;          //Количество потоков
+    static int length = size/threadQty;
+    static int[] n  = {0,1,2, length, length +1, length +2, 2*length, 2*length+1, 2*length+2, 3* length, 3*length+1, 3* length+2
+            , 4*length, 4*length + 1, 4*length + 2, 5*length, 5*length+1, 5*length+2, 6*length, 6*length+1, 6*length+2};
+//        static int[] n = {0,1, 3819646, 3819647, 3819648, 3819649, 3819650, 3819651, 3819652, 3819653, 3819654, 3819655};
 //    static int[] n = {3819651, 1556668, 3217037, 841715, 1159890, 9781837, 9154101, 7549502, 8755695, 8677778};
 
 
     static void simpleMethod() {
         long a = System.currentTimeMillis();
         for (int i = 0; i < size; i++) {
-            arr[i] = 1;
-            arr[i] = (float)(arr[i] * Math.sin(0.2f + i/5) * Math.cos(0.2f + i/5) * Math.cos(0.4f + i/2));
+            arr[i] = 1f;
+            arr[i] = (float)(arr[i] * Math.sin(0.2f + i/5f) * Math.cos(0.2f + i/5f) * Math.cos(0.4f + i/2f));
         }
         System.out.printf("Время работы - %f милисекунд\n", (float) (System.currentTimeMillis() - a));
 
@@ -32,9 +36,7 @@ public class testClass {
         float[] res1, res;
         res = new float[size];
 
-        int threadQty = 6;          //Количество потоков
         int lbegin;
-        int length = size/threadQty;
         int lend = -1;
 
         for (int l =1; lend + 1 < size - 1 ; l++) {
@@ -44,8 +46,7 @@ public class testClass {
             if (lend >= res.length) lend = size - 1;
 
             float[] tempArray = new float[lend - lbegin];
-            System.arraycopy(res,lbegin,tempArray, 0, lend - lbegin);
-            ThreadClass tempThread = new ThreadClass(tempArray);
+            ThreadClass tempThread = new ThreadClass(tempArray, lbegin);
             try {
                 tempThread.thrd.join();
             }
