@@ -7,10 +7,6 @@ public class testClass {
     static float[] arr = new float [size];
     static int threadQty = 6;          //Количество потоков
     static int length = size/threadQty;
-    static int[] n  = {0,1,2, length, length +1, length +2, 2*length, 2*length+1, 2*length+2, 3* length, 3*length+1, 3* length+2
-        , 4*length, 4*length + 1, 4*length + 2, 5*length, 5*length+1, 5*length+2, 6*length, 6*length+1, 6*length+2};
-//        static int[] n = {0,1, 3819646, 3819647, 3819648, 3819649, 3819650, 3819651, 3819652, 3819653, 3819654, 3819655};
-//    static int[] n = {3819651, 1556668, 3217037, 841715, 1159890, 9781837, 9154101, 7549502, 8755695, 8677778};
 
 
     static void showArray(float[] array) {
@@ -40,9 +36,6 @@ public class testClass {
         }
         System.out.printf("Время работы - %f милисекунд\n", (float) (System.currentTimeMillis() - a));
 
-//        for (int i : n) {
-//            System.out.printf("%15.8f", arr[i]);
-//        }
         showArray(arr);
         System.out.println();
     }
@@ -90,10 +83,6 @@ public class testClass {
 
         System.out.printf("Время работы - %f милисекунд\n", (float) (System.currentTimeMillis() - a));
 
-//        int[] n = {0, 1, 3819646, 3819647, 3819648, 3819649, 3819650, 3819651, 3819652, 3819653, 3819654, 3819655};
-//        for (int i : n) {
-//            System.out.printf("%15.8f", res[i]);
-//        }
         showArray(res);
     }
 }
