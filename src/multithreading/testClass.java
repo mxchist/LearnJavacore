@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class testClass {
     static final int size = 10000000;
     static float[] arr = new float [size];
-    static int threadQty = 6;          //Количество потоков
+    static int threadQty = 2;          //Количество потоков
     static int length = size/threadQty;
 
 
@@ -57,21 +57,23 @@ public class testClass {
             long b = System.currentTimeMillis();
             lbegin = lend + 1;
             lend = lbegin + length;
-            if (lend >= res.length) lend = size - 1;
+            if (lend >= size) lend = size - 1;
 
             float[] tempArray = new float[lend - lbegin];
             ThreadClass tempThread = new ThreadClass(tempArray, lbegin);
+            storeThreadClass.add(tempThread);
+
+        }
+
+
+        for (ThreadClass tempThread : storeThreadClass) {
             try {
                 tempThread.thrd.join();
             }
             catch (InterruptedException exc) {
                 exc.printStackTrace();
             }
-            storeThreadClass.add(tempThread);
-
-//            System.out.printf("Время цикла - %f милисекунд\n", (float) (System.currentTimeMillis() - b));
         }
-
         lbegin = 0;
 
         for (ThreadClass tempThread : storeThreadClass) {
