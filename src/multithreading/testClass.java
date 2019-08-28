@@ -16,16 +16,19 @@ public class testClass {
     static void showArray(float[] array) {
         ArrayList<Integer> positions = new ArrayList<Integer>();
         for (int i =1; i < threadQty; i++) {
-            for (int j = 0, k = i * length -5; j < 10 && k + j < size; j++ ) {
+            for (int j = 0, k = i * length -5; j < 10; j++ ) {
                 positions.add(k + j);
             }
         }
-        for (int j = 0, k = threadQty * length -5; j < 10; j++ ) {
+        for (int j = 0, k = threadQty * length -5; j < 10 && k + j < size; j++ ) {
             positions.add(k + j);
         }
 
+        int j = 0;
+
         for (int i : positions) {
             System.out.printf("%15.8f", array[i]);
+            if (++j %10 == 0) System.out.println();
         }
     }
 
@@ -88,9 +91,9 @@ public class testClass {
         System.out.printf("Время работы - %f милисекунд\n", (float) (System.currentTimeMillis() - a));
 
 //        int[] n = {0, 1, 3819646, 3819647, 3819648, 3819649, 3819650, 3819651, 3819652, 3819653, 3819654, 3819655};
-        for (int i : n) {
-            System.out.printf("%15.8f", res[i]);
-        }
-        System.out.println();
+//        for (int i : n) {
+//            System.out.printf("%15.8f", res[i]);
+//        }
+        showArray(res);
     }
 }
