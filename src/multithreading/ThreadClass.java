@@ -19,7 +19,7 @@ public class ThreadClass implements Runnable {
 //        System.out.println("Начинаем поток");
         for (int i = 0; i < arr.length; i++) {
             arr[i] = 1f;
-            arr[i] = (float)(arr[i] * Math.sin(0.2f + (lbegin + i)/5f) * Math.cos(0.2f + (lbegin + i)/5f) * Math.cos(0.4f + (lbegin + i)/2f));
+            arr[i] = (float)(arr[i] * Math.sin(0.2f + (lbegin + i)/5) * Math.cos(0.2f + (lbegin + i)/5) * Math.cos(0.4f + (lbegin + i)/2));
         }
     }
 
