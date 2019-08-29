@@ -2,9 +2,10 @@
     -fx-font: 11px "Tahoma";
     -fx-base: white;
     -fx-background-color: #7affff;
-    -fx-border-radius: 10;
-    -fx-background-radius: 8;
-    -fx-effect: dropshadow( gaussian , black , 8 , 0.0 , 2 , 0 );
+    -fx-border-radius: 6;
+    -fx-border-color: #7B68EE;
+    -fx-background-radius: 100;
+    //-fx-effect: dropshadow( gaussian , black , 8 , 0.0 , 2 , 0 );
     -fx-cursor: soft-light;
 }
 #textArea {
@@ -20,12 +21,12 @@
 }
 #textField {
     -fx-font: 10px "Arial";
-    -fx-background-color: radial-gradient(radius 90%, #66cdaa, white,#66cdaa);
+    -fx-background-color: lightcyan ;
     -fx-base: white;
-    -fx-background-radius: 4;
+    -fx-background-radius: 2;
     -fx-cursor: src-over;
-    -fx-padding: 5;
-    -fx-effect: innershadow( gaussian , #ffa07a , 4 , 0.9 , 2 , 0 );
+    -fx-padding: 7;
+    //-fx-effect: innershadow( gaussian , #ffa07a , 4 , 0.9 , 2 , 0 );
 }
 #vBox {
     -fx-background: #ccffcc;
