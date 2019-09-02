@@ -27,7 +27,12 @@ public class Controller implements Initializable {
     final int PORT = 8189;
 
     public void sendMsg() {
-        textArea.appendText(textField.getText() + "\n");;
+        try {
+            out.writeUTF(textField.getText());
+        }
+        catch (IOException exc) {
+            exc.printStackTrace();
+        }
         textField.clear();
         textField.requestFocus();
     }
@@ -44,7 +49,8 @@ public class Controller implements Initializable {
                 public void run() {
                     while (true) {
                         try {
-                            in.readUTF();
+                            String str = in.readUTF();
+                            textArea.appendText(str + "\n");
                         }
                         catch (IOException exc)  {
                             exc.printStackTrace();
@@ -72,6 +78,5 @@ public class Controller implements Initializable {
 //                exc.printStackTrace();
 //            }
 //        }
-
     }
 }

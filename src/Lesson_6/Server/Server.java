@@ -7,28 +7,26 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class Server {
-    public static void main (String ... args) {
+    private Vector<ClientHandler> clients;
+
+    public Server() {
         ServerSocket server = null;
         Socket socket = null;
+        clients = new Vector<ClientHandler>();
 
         try {
             server = new ServerSocket(8189);
             System.out.println("Сервер запущен!");
 
-            socket = server.accept();
-            System.out.print("Клиент подключился!");
-
-            DataInputStream in = new DataInputStream(socket.getInputStream());
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-
             while (true) {
-                String str = in.readUTF();
-                System.out.println("Client " + str);
-                if (str.equals("/end")) break;
-                out.writeUTF(str);
+                socket = server.accept();
+                clients.add(new ClientHandler(this, socket));
             }
+//            System.out.print("Клиент подключился!");
+
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -41,5 +39,11 @@ public class Server {
             }
         }
 
+    }
+
+    public void broadcastMsg( String msg ) {
+        for (ClientHandler c : clients) {
+            c.sendMsg(msg);
+        }
     }
 }
