@@ -40,7 +40,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         try {
-            Socket socket = new Socket(IP_ADDRESS, PORT);
+            socket = new Socket(IP_ADDRESS, PORT);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
@@ -65,7 +65,7 @@ public class Controller implements Initializable {
                         }
                     }
                 }
-            }).start(); ;
+            }).start();
         }
         catch (IOException exc) {
             exc.printStackTrace();
