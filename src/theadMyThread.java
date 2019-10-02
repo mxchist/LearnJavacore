@@ -21,17 +21,8 @@ public class theadMyThread {
         return array;
     }
 
-    public static void main(String... args) {
-
+    static void multithreading () {
         float[] myArray = new float[size];
-        fillArray(myArray);
-        out.println(myArray[100000]);
-        long startTime = System.currentTimeMillis() / 1000;
-        processArray(myArray, 0);
-        out.println(myArray[100000]);
-        out.printf("Затраченное время на выполнение: %.1f секунд %n", (float) (System.currentTimeMillis() / 1000 - startTime));
-
-        //Пробуем в многопоточность
         int threadCount, tempArraySize;
         int start = 0, end = start;
         int[] theNewArray = new int[size];
@@ -41,37 +32,61 @@ public class theadMyThread {
             out.printf("Введите желаемое количество потоков %n");
             threadCount = sc.nextInt();
             fillArray(myArray);
+
             tempArraySize = (int)(size / threadCount);
-            ArrayList<float[]> tempArraySet = new ArrayList<float[]>();
-            for (int currentThread = 0; currentThread < threadCount; currentThread++) {
+//            ArrayList<float[]> tempArraySet = new ArrayList<float[]>();
+            ArrayList<Thread> threadSet = new ArrayList<Thread>();
+            ArrayList<float[]> resultArraySet = new ArrayList<float[]>();
+            long startTime = System.currentTimeMillis() / 1000;
+
+            for (int currentThread = 0; currentThread < threadCount && start < myArray.length; currentThread++) {
                 end += tempArraySize;
+                final int startInRunnable = currentThread * tempArraySize;
                 if (end + tempArraySize >= size)  {
                     end = size - 1;
                     tempArraySize = end - start;
                 }
                 float[] tempArray = new float[tempArraySize];
                 System.arraycopy(myArray, start, tempArray, 0, tempArraySize);
-                tempArraySet.add(tempArray);
+//                tempArraySet.add(tempArray);
+                threadSet.add(new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        resultArraySet.add(processArray(tempArray, startInRunnable));
+                    }
+                }));
+                start = end + 1;
             }
 
-            out.println(tempArraySet.size());
+            out.printf("Количество тредов в коллекции: %d", threadSet.size());
 
             for (int currentThread = 0; currentThread < threadCount; currentThread++) {
-                float[] tempArray = tempArraySet.get(threadCount);
-                try {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            
-                        }
-                    }).start();
-                } catch (InterruptedException exc) {
-                    exc.printStackTrace();
-                }
+                    threadSet.get(currentThread).start();
             }
 
+            for (int currentThread = 0; currentThread < threadCount; currentThread++) {
+                System.arraycopy(resultArraySet.get(currentThread), 0, myArray, currentThread * tempArraySize
+                , resultArraySet.get(currentThread).length);
+            }
+            out.printf("Затраченное время на выполнение: %.1f секунд %n", (float) (System.currentTimeMillis() / 1000 - startTime));
+
         } catch (InputMismatchException exc) {
-                    exc.printStackTrace();
+            exc.printStackTrace();
         }
+
+    }
+
+    public static void main(String... args) {
+        //всё в один поток
+        float[] myArray = new float[size];
+        fillArray(myArray);
+        out.println(myArray[100000]);
+        long startTime = System.currentTimeMillis() / 1000;
+        processArray(myArray, 0);
+        out.println(myArray[100000]);
+        out.printf("Затраченное время на выполнение: %.1f секунд %n", (float) (System.currentTimeMillis() / 1000 - startTime));
+
+        //Пробуем в многопоточность
+        multithreading();
     }
 }
