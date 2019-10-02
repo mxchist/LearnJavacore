@@ -44,13 +44,16 @@ public class Controller implements Initializable {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     while (true) {
                         try {
-                            String str = in.readUTF();
-                            textArea.appendText(str + "\n");
+                            while (true) {
+                                String str = in.readUTF();
+                                textArea.appendText(str + "\n");
+                            }
                         }
                         catch (IOException exc)  {
                             exc.printStackTrace();
