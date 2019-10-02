@@ -2,6 +2,7 @@ package Lesson_6.Client;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -19,6 +20,9 @@ public class Controller implements Initializable {
     @FXML
     TextField textField;
 
+    @FXML
+    Button btn1;
+
     Socket socket;
     DataInputStream in;
     DataOutputStream out;
@@ -29,12 +33,12 @@ public class Controller implements Initializable {
     public void sendMsg() {
         try {
             out.writeUTF(textField.getText());
+            textField.clear();
+            textField.requestFocus();
         }
         catch (IOException exc) {
             exc.printStackTrace();
         }
-        textField.clear();
-        textField.requestFocus();
     }
 
     @Override
@@ -47,10 +51,11 @@ public class Controller implements Initializable {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    while (true) {
                         try {
-                            String str = in.readUTF();
-                            textArea.appendText(str + "\n");
+                            while (true) {
+                                String str = in.readUTF();
+                                textArea.appendText(str + "\n");
+                            }
                         }
                         catch (IOException exc)  {
                             exc.printStackTrace();
@@ -62,7 +67,6 @@ public class Controller implements Initializable {
                             catch (IOException exc) {
                                 exc.printStackTrace();
                             }
-                        }
                     }
                 }
             }).start();
