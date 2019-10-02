@@ -6,18 +6,17 @@ import java.net.Socket;
 
 public class ClientHandler {
     private Socket socket;
+    private Server server;
     private DataInputStream in;
     private DataOutputStream out;
-    private Server server;
 
 
     public ClientHandler (Server server, Socket socket) {
-        this.socket = socket;
         try {
             this.socket = socket;
             this.server = server;
-            in =  new DataInputStream(socket.getInputStream());
-            out = new DataOutputStream(socket.getOutputStream());
+            this.in =  new DataInputStream(socket.getInputStream());
+            this.out = new DataOutputStream(socket.getOutputStream());
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -35,21 +34,21 @@ public class ClientHandler {
                         catch (IOException exc) {
                                 exc.printStackTrace();
                         }
+                    finally {
+                        try {
+                            in.close();
+                            out.close();
+                            socket.close();
+                        }
+                        catch (IOException exc) {
+                            exc.printStackTrace();
+                        }
+                    }
                 }
             }).start();
         }
         catch (IOException exc) {
             exc.printStackTrace();
-        }
-        finally {
-            try {
-                in.close();
-                out.close();
-                socket.close();
-            }
-            catch (IOException exc) {
-                exc.printStackTrace();
-            }
         }
 
     }
