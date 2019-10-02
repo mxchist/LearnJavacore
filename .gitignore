@@ -1,5 +1,4 @@
-out/*
+.idea/.xml
 
-src/multithreading/AnotherNewClass.java
-.idea/workspace.xml
+src/Lesson_6/Client/Controller.java
 
