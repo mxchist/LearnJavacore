@@ -48,6 +48,8 @@ public class Controller implements Initializable {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
+            System.out.println("Клиент запущен");
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {

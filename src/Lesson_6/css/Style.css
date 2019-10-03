@@ -9,8 +9,9 @@
     -fx-cursor: soft-light;
 }
 #textArea {
-    -fx-font: 12px "Verdana";
-    -font-weight:400;
+    -fx-font: 12px "Gotham";
+    -fx-text-fill: darkviolet;
+    -font-weight:900;
     -fx-background-color: #7affff;
     -fx-border-radius: 2;
     -fx-base: lightgoldenrodyellow ;
@@ -21,7 +22,8 @@
     -fx-padding: 4;
 }
 #textField {
-    -fx-font: 10px "Arial";
+    -fx-font: 12px "Helvetica";
+    -font-weight: lighter ;
     -fx-background-color: lightcyan ;
     -fx-base: white;
     -fx-background-radius: 2;

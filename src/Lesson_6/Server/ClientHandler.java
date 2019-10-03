@@ -23,12 +23,14 @@ public class ClientHandler {
                     try {
                         while (true) {
                             String str = in.readUTF();
-                            System.out.println("Client " + str);
-                            if (str.equals("/end")) {
-                                out.writeUTF("Сервер закрыт" + "\n");
-                                break;
+                            if (str.isEmpty() == false) {
+                                System.out.println("Client " + str);
+                                if (str.equals("/end")) {
+                                    out.writeUTF("Сервер закрыт" + "\n");
+                                    break;
+                                }
+                                server.broadcastMsg(str);
                             }
-                            server.broadcastMsg(str);
                         }
                     }
                         catch (IOException exc) {
