@@ -29,7 +29,7 @@ public class Controller  {
         }
     }
 
-    public void initialize(URL location, ResourceBundle resourceBundle) {
+    public void initialize() {
         try {
             socket = new Socket(IP_ADDRESS, PORT);
             in = new DataInputStream(socket.getInputStream());
