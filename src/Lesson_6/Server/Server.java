@@ -3,19 +3,19 @@ package Lesson_6.Server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
 import java.util.Vector;
 
 public class Server {
+//    private Vector<ClientHandler> clients;
     private Vector<ClientHandler> clients;
 
     public Server() {
         ServerSocket server = null;
         Socket socket = null;
         clients = new Vector<ClientHandler>();
+        int clientNum = 1;
 
         try {
             server = new ServerSocket(8189);
@@ -24,8 +24,13 @@ public class Server {
             while (true) {
                 socket = server.accept();
                 clients.add(new ClientHandler(this, socket));
+                clients.get(clientNum - 1).sendMsg("Клиент Client" +
+                        (clientNum < 10 ? "00" : clientNum < 100 ? "0" : "") +
+                        clientNum + " подключился!");
+                System.out.printf("Клиент Client%03d подключился! %n", clientNum);
+                clients.get(clientNum - 1).setClientNum(clientNum);
+                clientNum ++;
             }
-//            System.out.print("Клиент подключился!");
 
         }
         catch (IOException e) {
@@ -43,7 +48,7 @@ public class Server {
 
     public void broadcastMsg( String msg ) {
         for (ClientHandler c : clients) {
-            c.sendMsg(msg);
-        }
+           c.sendMsg(msg);
+        };
     }
 }

@@ -56,6 +56,7 @@ public class Controller implements Initializable {
                         try {
                             while (true) {
                                 String str = in.readUTF();
+
                                 textArea.appendText(str + "\n");
                             }
                         }
@@ -76,13 +77,5 @@ public class Controller implements Initializable {
         catch (IOException exc) {
             exc.printStackTrace();
         }
-//        finally {
-//            try {
-//                socket.close();
-//            }
-//            catch (IOException exc) {
-//                exc.printStackTrace();
-//            }
-//        }
     }
 }
