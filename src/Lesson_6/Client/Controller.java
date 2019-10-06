@@ -1,10 +1,6 @@
 package Lesson_6.Client;
 
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -12,16 +8,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.net.Socket;
+import java.util.Scanner;
 
-public class Controller implements Initializable {
-    @FXML
-    TextArea textArea;
-
-    @FXML
-    TextField textField;
-
-    @FXML
-    Button btn1;
+public class Controller  {
 
     Socket socket;
     DataInputStream in;
@@ -32,16 +21,14 @@ public class Controller implements Initializable {
 
     public void sendMsg() {
         try {
-            out.writeUTF(textField.getText());
-            textField.clear();
-            textField.requestFocus();
+            System.out.println("Место для соообщения");
+            out.writeUTF(new Scanner(System.in).next());
         }
         catch (IOException exc) {
             exc.printStackTrace();
         }
     }
 
-    @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         try {
             socket = new Socket(IP_ADDRESS, PORT);
@@ -57,7 +44,7 @@ public class Controller implements Initializable {
                             while (true) {
                                 String str = in.readUTF();
 
-                                textArea.appendText(str + "\n");
+                                System.out.println(str);
                             }
                         }
                         catch (IOException exc)  {
@@ -73,6 +60,30 @@ public class Controller implements Initializable {
                     }
                 }
             }).start();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        while (true) {
+                            String str = in.readUTF();
+
+                            System.out.println(str);
+                        }
+                    }
+                    catch (IOException exc)  {
+                        exc.printStackTrace();
+                    }
+                    finally {
+                        try {
+                            socket.close();
+                        }
+                        catch (IOException exc) {
+                            exc.printStackTrace();
+                        }
+                    }
+                }
+            });
         }
         catch (IOException exc) {
             exc.printStackTrace();
