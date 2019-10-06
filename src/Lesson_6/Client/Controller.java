@@ -66,9 +66,7 @@ public class Controller  {
                 public void run() {
                     try {
                         while (true) {
-                            String str = in.readUTF();
-
-                            System.out.println(str);
+                            out.writeUTF(new Scanner(System.in).next());
                         }
                     }
                     catch (IOException exc)  {
@@ -83,7 +81,7 @@ public class Controller  {
                         }
                     }
                 }
-            });
+            }).start();
         }
         catch (IOException exc) {
             exc.printStackTrace();
