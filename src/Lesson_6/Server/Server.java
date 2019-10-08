@@ -24,7 +24,7 @@ public class Server {
             while (true) {
                 socket = server.accept();
                 clients.add(new ClientHandler(this, socket));
-                clients.get(clientNum - 1).sendMsg("Клиент Client" +
+                broadcastMsg("Клиент Client" +
                         (clientNum < 10 ? "00" : clientNum < 100 ? "0" : "") +
                         clientNum + " подключился!");
                 System.out.printf("Клиент Client%03d подключился! %n", clientNum);

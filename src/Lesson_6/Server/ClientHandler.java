@@ -27,11 +27,13 @@ public class ClientHandler {
                         while (true) {
                             String str = in.readUTF();
                             if (str.isEmpty() == false) {
-                                System.out.printf("Client%03d: %s %n", clientNum, str);
                                 if (str.equals("/end")) {
-                                    out.writeUTF("Сервер закрыт" + "\n");
+                                    sendMsg("Сервер закрыт" + "\n");
                                     break;
                                 }
+                                str = "Client" +
+                                        (clientNum < 10 ? "00" : clientNum < 100 ? "0" : "") +
+                                        clientNum + ": " + str;
                                 server.broadcastMsg(str);
                             }
                         }

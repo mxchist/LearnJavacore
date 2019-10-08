@@ -43,7 +43,6 @@ public class Controller  {
                         try {
                             while (true) {
                                 String str = in.readUTF();
-
                                 System.out.println(str);
                             }
                         }
