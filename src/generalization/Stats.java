@@ -53,6 +53,7 @@ class AllwaysOutnumbered {
 
     public static void main (String ... args) {
         //Задание 1
+        out.println ("Задание 1");
         Stats<String> stats1 = new Stats<>("Spitfire", "Memphis bells", "Girls", "Wake Up Call", "Action Radar");
         changeThePlaceOfElements(stats1, 1, 2);
         out.println( stats1.toString());
