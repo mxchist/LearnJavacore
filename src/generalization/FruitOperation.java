@@ -43,6 +43,10 @@ class Box<T extends Number> {
         this.boxStorage = boxStorage;
     }
 
+    ArrayList<Fruit<T>> getObject() {
+        return boxStorage;
+    }
+
     Box() {
         this.boxStorage = new ArrayList<Fruit<T>>();
     }
@@ -59,10 +63,6 @@ class Box<T extends Number> {
         return weight;
     }
 
-    double getOVerallWieght() {
-        return this.sum();
-    }
-
     boolean compare (Box<?> anotherBox) {
         double difference = this.sum() - anotherBox.sum();
         return  difference > - 0.0001 && difference < 0.0001 ? true : false;
@@ -70,16 +70,42 @@ class Box<T extends Number> {
 }
 
 public class FruitOperation {
+//  перекладывание фруктов из ящика №1 в ящик №2
+    static void fruitsRechange(Box b1, Box<?> b2) {
+        ArrayList temporaryArray = new ArrayList<>();
+//      перекладываем фрукты из ящика 1 во временный ящик
+        for(int i = 0; i < b1.getObject().size() - 1; i++) {
+            temporaryArray.add(b1.getObject().get(i));
+        }
+//        освобождаем ящик №1
+        b1.getObject().clear();
+        b1.getObject().trimToSize();
+
+//      перекладываем фрукты из ящика 2 в ящик №1
+        for(int i = 0; i < b2.getObject().size() - 1; i++) {
+            b1.putToTheBox(b2.getObject().get(i));
+        }
+//        освобождаем ящик №2
+        b2.getObject().clear();
+        b2.getObject().trimToSize();
+
+//      перекладываем фрукты из временного ящика в ящик №2
+        for(int i = 0; i < temporaryArray.size() - 1; i++) {
+            b1.putToTheBox(temporaryArray.get(i));
+        }
+
+    }
+
     public static void main(String ... args) {
         Orange<Integer> o1 = new Orange<Integer>();
         Apple<Double> a1 = new Apple<Double>();
 
-        //        Заполнение коробки с апельсинами
+//        Заполнение коробки с апельсинами
         Box b1 = new Box();
         for(int i = 0; i < 10; i++) {
             b1.putToTheBox(new Orange<Integer>());
         }
-        //        Заполнение коробки с яблоками
+//        Заполнение коробки с яблоками
         Box b2 = new Box();
         for(int i = 0; i < 15; i++) {
             b2.putToTheBox(new Apple<Double>());
@@ -109,3 +135,5 @@ public class FruitOperation {
         out.printf("Результат сравнения коробок: %b %n", b1.compare(b2));
     }
 }
+
+
