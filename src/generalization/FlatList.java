@@ -32,14 +32,14 @@ public class FlatList {
 
         ArrayList<HashMap<Integer, String>> al = new ArrayList<HashMap<Integer, String>>();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             al.add(new HashMap<Integer, String>());
         }
 
         for (String s : l) {
             if (s== null) continue;
-            for (int i = 0; i < l.lastIndexOf("Test" + i); i++) {
-                if (s.equals("Test" + i)) {
+            for (int i = 0; i < l.lastIndexOf("Test" + (i+1)); i++) {
+                if (s.equals("Test" + (i+1))) {
                     int j = al.get(i).size();
                     al.get(i).put(j, "Test1");
                 }
