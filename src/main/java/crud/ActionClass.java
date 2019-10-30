@@ -47,10 +47,24 @@ public class ActionClass {
     }
 
     static void updateScore(String student_name, int score) throws SQLException {
-        pstmt.executeUpdate("UPDATE student SET score = ? WHERE student_name = ?");
+        pstmt = connection.prepareStatement("UPDATE student SET score = ? WHERE student_name = ?");
         pstmt.setInt(1, score);
         pstmt.setString(2, student_name);
         pstmt.execute();
+    }
+
+    static void deleteRow(int student_id) throws SQLException {
+        pstmt = connection.prepareStatement("DELETE FROM student WHERE student_id = ?");
+        pstmt.setInt(1, student_id);
+        pstmt.execute();
+    }
+
+    static void showTable() throws SQLException {
+        ResultSet rs =  stmt.executeQuery("SELECT student_name, score FROM student");
+        while (rs.next()) {
+            System.out.printf("%-20s \t %d %n", rs.getString(1), rs.getInt(2));
+        }
+
     }
 
     public static void main (String ... args) throws SQLException {
@@ -69,6 +83,19 @@ public class ActionClass {
                 e.printStackTrace();
             }
         });
+
+
+
+        showTable();
+
+        System.out.println("\nAn update of the rows beginning");
+        updateScore("Sidorov", 30);
+
+        showTable();
+
+        System.out.println("\nAn delete of the rows beginning");
+        deleteRow(1);
+        showTable();
         disconnect();
     }
 }
