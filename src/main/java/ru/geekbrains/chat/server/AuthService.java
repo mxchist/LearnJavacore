@@ -9,7 +9,7 @@ public class AuthService {
     public static void connect() {
         try {
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:users.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:backend_DB.db");
             stmt = connection.createStatement();
         } catch (Exception e) {
             e.printStackTrace();
@@ -18,7 +18,7 @@ public class AuthService {
 
     public static void addUser(String login, String pass, String nick) {
         try {
-            String query = "INSERT INTO main (login, password, nickname) VALUES (?, ?, ?);";
+            String query = "INSERT INTO users (login, password, nickname) VALUES (?, ?, ?);";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, login);
             ps.setInt(2, pass.hashCode());
@@ -31,7 +31,7 @@ public class AuthService {
 
     public static String getNickByLoginAndPass(String login, String pass) {
         try {
-            ResultSet rs = stmt.executeQuery("SELECT nickname, password FROM main WHERE login = '" + login + "'");
+            ResultSet rs = stmt.executeQuery("SELECT nickname, password FROM users WHERE login = '" + login + "'");
             int myHash = pass.hashCode();
             if (rs.next()) {
                 String nick = rs.getString(1);
