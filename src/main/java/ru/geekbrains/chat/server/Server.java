@@ -39,9 +39,9 @@ public class Server {
     }
 
     public void sendPersonalMsg(ClientHandler from, String nickTo, String msg) {
-        for (ClientHandler o : clients) {
-            if (o.getNick().equals(nickTo)) {
-                o.sendMsg("from " + from.getNick() + ": " + msg);
+        for (ClientHandler cl : clients) {
+            if (cl.getNick().equals(nickTo)) {
+                cl.sendMsg("from " + from.getNick() + ": " + msg);
                 from.sendMsg("to " + nickTo + ": " + msg);
                 return;
             }
@@ -50,16 +50,16 @@ public class Server {
     }
 
     public void broadcastMsg(ClientHandler from, String msg) {
-        for (ClientHandler o : clients) {
-            if (!o.checkBlackList(from.getNick())) {
-                o.sendMsg(msg);
+        for (ClientHandler cl : clients) {
+            if (!cl.checkBlackList(from.getNick())) {
+                cl.sendMsg(msg);
             }
         }
     }
 
     public boolean isNickBusy(String nick) {
-        for (ClientHandler o : clients) {
-            if (o.getNick().equals(nick)) {
+        for (ClientHandler cl : clients) {
+            if (cl.getNick().equals(nick)) {
                 return true;
             }
         }
@@ -69,12 +69,12 @@ public class Server {
     public void broadcastClientsList() {
         StringBuilder sb = new StringBuilder();
         sb.append("/clientslist ");
-        for (ClientHandler o : clients) {
-            sb.append(o.getNick() + " ");
+        for (ClientHandler cl : clients) {
+            sb.append(cl.getNick() + " ");
         }
         String out = sb.toString();
-        for (ClientHandler o : clients) {
-            o.sendMsg(out);
+        for (ClientHandler cl : clients) {
+            cl.sendMsg(out);
         }
     }
 
