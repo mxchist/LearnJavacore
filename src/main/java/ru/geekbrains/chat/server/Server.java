@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
+import java.sql.Statement;
 
 public class Server {
     private Vector<ClientHandler> clients;
