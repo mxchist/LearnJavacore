@@ -1,0 +1,36 @@
+#btn1 {
+    -fx-font: 11px "Tahoma";
+    -fx-base: white;
+    -fx-background-color: #7affff;
+    -fx-border-radius: 6;
+    -fx-border-color: #7B68EE;
+    -fx-background-radius: 100;
+    //-fx-effect: dropshadow( gaussian , black , 8 , 0.0 , 2 , 0 );
+    -fx-cursor: soft-light;
+}
+#textArea {
+    -fx-font: 12px "Gotham";
+    -fx-text-fill: darkviolet;
+    -font-weight:900;
+    -fx-background-color: #7affff;
+    -fx-border-radius: 2;
+    -fx-base: lightgoldenrodyellow ;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow( two-pass-box , yellow   , 8 , 0.5 , 10 , 2 );
+    -fx-cursor: h-resize;
+    -fx-blend-mode: multiply ;
+    -fx-padding: 4;
+}
+#textField {
+    -fx-font: 12px "Helvetica";
+    -font-weight: lighter ;
+    -fx-background-color: lightcyan ;
+    -fx-base: white;
+    -fx-background-radius: 2;
+    -fx-cursor: src-over;
+    -fx-padding: 7;
+    -fx-effect: innershadow( gaussian , #ffa07a , 2 , 0.9 , 0 , 0 );
+}
+#vBox {
+    -fx-background: #e6fff7;
+}
