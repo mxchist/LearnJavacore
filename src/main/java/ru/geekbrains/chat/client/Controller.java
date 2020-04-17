@@ -38,6 +38,12 @@ public class Controller implements Initializable {
     PasswordField passwordField;
 
     @FXML
+    HBox hashPanel;
+
+    @FXML
+    TextField hashField;
+
+    @FXML
     private Label userName;
 
     @FXML
@@ -66,6 +72,8 @@ public class Controller implements Initializable {
         if (!isAuthorized) {
             upperPanel.setVisible(true);
             upperPanel.setManaged(true);
+            hashPanel.setVisible(true);
+            hashPanel.setManaged(true);
             bottomPanel.setVisible(false);
             bottomPanel.setManaged(false);
             clientsList.setVisible(false);
@@ -73,6 +81,8 @@ public class Controller implements Initializable {
         } else {
             upperPanel.setVisible(false);
             upperPanel.setManaged(false);
+            hashPanel.setVisible(false);
+            hashPanel.setManaged(false);
             bottomPanel.setVisible(true);
             bottomPanel.setManaged(true);
             clientsList.setVisible(true);
@@ -150,8 +160,9 @@ public class Controller implements Initializable {
             connect();
         }
         try {
+            hashField.setText(Integer.toString(passwordField.getText().hashCode()));
             out.writeUTF("/auth " + loginField.getText() + " " + passwordField.getText());
-            loginField.clear();
+//            loginField.clear();
             passwordField.clear();
         } catch (IOException e) {
             e.printStackTrace();

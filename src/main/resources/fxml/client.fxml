@@ -15,6 +15,9 @@
         <PasswordField fx:id="passwordField" onAction="#tryToAuth" promptText="Пароль" />
         <Button onAction="#tryToAuth" text="Авторизоваться" />
     </HBox>
+    <HBox fx:id="hashPanel">
+        <TextField fx:id="hashField" promptText="Хэш" VBox.vgrow="ALWAYS" />
+    </HBox>
     <HBox VBox.vgrow="ALWAYS">
         <VBox HBox.hgrow="ALWAYS">
             <TextArea fx:id="chatArea" editable="false" VBox.vgrow="ALWAYS" />
@@ -23,9 +26,8 @@
                 <Button onAction="#sendMsg" text="Отправить" />
             </HBox>
         </VBox>
-        <ListView fx:id="clientsList" onMouseClicked="#selectClient" prefWidth="200" />
+        <ListView fx:id="clientsList" onMouseClicked="#selectClient" prefWidth="400" />
         <Label fx:id="userName" text="userName" styleClass="userLogin"/>
     </HBox>
-
 
 </VBox>
