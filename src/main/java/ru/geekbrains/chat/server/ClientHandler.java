@@ -31,7 +31,7 @@ public class ClientHandler {
                 try {
                     while (true) {
                         String str = in.readUTF();
-                        if (str.startsWith("/auth")) { // /auth login72 pass72
+                        if (str.startsWith("/auth")) { // /auth login1 pass1
                             String[] tokens = str.split(" ");
                             String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
                             if (newNick != null) {
