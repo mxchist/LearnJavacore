@@ -4,4 +4,5 @@ target/
 target/maven-status/maven-compiler-plugin/compile/default-compile/
 *.iml
 workspace.xml
+users*.db
 
