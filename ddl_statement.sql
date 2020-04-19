@@ -15,11 +15,12 @@ create table server_session (
     , creation_time text not null constraint DF_creation_time default (datetime('now'))
 );
 
-create table user_session (
-    user_session_id integer primary key autoincrement
-    , server_session_id integer references server_session(server_session_id)
-    , creation_time text not null constraint DF_creation_time default (datetime('now', 'localtime'))
-    , nickname text
+CREATE TABLE user_session (
+    user_session_id   INTEGER,
+    server_session_id INTEGER REFERENCES server_session (server_session_id),
+    creation_time     TEXT    NOT NULL
+                              CONSTRAINT DF_creation_time DEFAULT (datetime('now', 'localtime') ),
+    nickname          TEXT,
+    constraint PK_user_session PRIMARY KEY (user_session_id, server_session_id)
 );
-
 PRAGMA foreign_keys = on;
