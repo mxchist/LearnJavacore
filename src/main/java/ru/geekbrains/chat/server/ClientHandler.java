@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class ClientHandler {
     private DataOutputStream out;
     private DataInputStream in;
     private String nick;
+    private static int sessionId;
 
     List<String> blackList;
 
@@ -33,11 +35,14 @@ public class ClientHandler {
                         String str = in.readUTF();
                         if (str.startsWith("/auth")) { // /auth login1 pass1
                             String[] tokens = str.split(" ");
-                            String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
+                            AuthService authService = new AuthService(server.connection);
+                            String newNick = authService.getNickByLoginAndPass(tokens[1], tokens[2]);
                             if (newNick != null) {
                                 if (!server.isNickBusy(newNick)) {
                                     sendMsg("/authok");
                                     nick = newNick;
+                                    sessionId++;
+                                    server.logNewClientSessionId(nick, sessionId);
                                     server.subscribe(this);
                                     break;
                                 } else {

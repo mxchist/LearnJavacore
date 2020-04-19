@@ -10,8 +10,8 @@ public class Server {
 	private Vector<ClientHandler> clients;
 	public Connection connection;
 	private Statement stmt;
-
 	private int sessionId;
+	private int clientSessionId;
 
 	public Server() {
 		clients = new Vector<>();
@@ -23,8 +23,10 @@ public class Server {
 			server = new ServerSocket(8189);
 			System.out.println("Сервер запущен. Ожидаем клиентов...");
 			logNewSessionId();
+			this.clientSessionId = 0;
 			while (true) {
 				socket = server.accept();
+				this.clientSessionId++;
 				System.out.println("Клиент подключился");
 				new ClientHandler(this, socket);
 			}
@@ -63,6 +65,38 @@ public class Server {
 		}
 	}
 	
+	private void logNewSessionId() {
+		try {
+			this.stmt.executeUpdate(
+					"insert into main.server_session\n" +
+							"default values;\n" +
+							"\n");
+			ResultSet rs = this.stmt.executeQuery("select last_insert_rowid();");
+			if (rs.next()) {
+				this.sessionId = rs.getInt(1);
+			}
+		}
+		catch (SQLException exc) {
+			exc.printStackTrace();
+		}
+	}
+
+	public void logNewClientSessionId(String nickname, int clientSessionId) {
+		try {
+			PreparedStatement ps = connection.prepareStatement(
+					"insert into main.user_session(user_session_id, server_session_id, nickname)\n" +
+							"values(?, ?, ?);"
+			);
+			ps.setInt(1, clientSessionId);
+			ps.setInt(2, this.sessionId);
+			ps.setString(3, nickname);
+			ps.executeUpdate();
+		}
+		catch (SQLException exc) {
+			exc.printStackTrace();
+		}
+	}
+
 	public void sendPersonalMsg(ClientHandler from, String nickTo, String msg) {
 		for (ClientHandler cl : clients) {
 			if (cl.getNick().equals(nickTo)) {
