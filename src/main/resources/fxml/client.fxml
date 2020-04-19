@@ -15,9 +15,6 @@
         <PasswordField fx:id="passwordField" onAction="#tryToAuth" promptText="Пароль" />
         <Button onAction="#tryToAuth" text="Авторизоваться" />
     </HBox>
-    <HBox fx:id="hashPanel">
-        <TextField fx:id="hashField" promptText="Хэш" VBox.vgrow="ALWAYS" />
-    </HBox>
     <HBox VBox.vgrow="ALWAYS">
         <VBox HBox.hgrow="ALWAYS">
             <TextArea fx:id="chatArea" editable="false" VBox.vgrow="ALWAYS" />
