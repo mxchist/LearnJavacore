@@ -3,20 +3,21 @@ package ru.geekbrains.chat.server;
 import java.sql.*;
 
 public class AuthService {
-    private static Connection connection;
-    private static Statement stmt;
+    private Connection connection;
+    private Statement stmt;
 
-    public static void connect() {
+    public AuthService (Connection connection) {
+        this.connection = connection;
         try {
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:backend_DB.db");
             stmt = connection.createStatement();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        catch (SQLException exc) {
+            exc.printStackTrace();
+        }
+
     }
 
-    public static void addUser(String login, String pass, String nick) {
+    public void addUser(String login, String pass, String nick) {
         try {
             String query = "INSERT INTO users (login, password, nickname) VALUES (?, ?, ?);";
             PreparedStatement ps = connection.prepareStatement(query);
@@ -29,7 +30,7 @@ public class AuthService {
         }
     }
 
-    public static String getNickByLoginAndPass(String login, String pass) {
+    public String getNickByLoginAndPass(String login, String pass) {
         try {
             ResultSet rs = stmt.executeQuery("SELECT nickname, password FROM users WHERE login = '" + login + "'");
             int myHash = pass.hashCode();
@@ -44,13 +45,5 @@ public class AuthService {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static void disconnect() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
