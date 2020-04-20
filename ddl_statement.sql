@@ -5,6 +5,8 @@ CREATE TABLE user (
     nickname TEXT    UNIQUE
 );
 
+PRAGMA foreign_keys = on;
+
 CREATE TABLE student (student_id integer primary key autoincrement
     , student_name varchar(100)
     , score tinyint);
@@ -23,4 +25,20 @@ CREATE TABLE user_session (
     nickname          TEXT,
     constraint PK_user_session PRIMARY KEY (user_session_id, server_session_id)
 );
-PRAGMA foreign_keys = on;
+
+create table messages_broadcast (
+    id integer primary key autoincrement
+    , creation_time     TEXT    NOT NULL
+                              CONSTRAINT DF_creation_time DEFAULT (datetime('now', 'localtime') )
+    , server_session_id integer
+    , message text
+);
+
+create table messages_personal (
+    id integer primary key autoincrement
+    , creation_time     TEXT    NOT NULL
+                              CONSTRAINT DF_creation_time DEFAULT (datetime('now', 'localtime') )
+    , sent_user_session_id integer
+    , recieved_user_session_id integer
+    , message text
+)
