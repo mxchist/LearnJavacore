@@ -82,8 +82,7 @@ public class Server {
 		}
 	}
 
-	public void logNewClientSessionId(String nickname, int clientSessionId) {
-		try {
+	public void logNewClientSessionId(String nickname, int clientSessionId) throws SQLException {
 			this.ps = connection.prepareStatement(
 					"insert into main.user_session(user_session_id, server_session_id, nickname)\n" +
 							"values(?, ?, ?);"
@@ -92,10 +91,6 @@ public class Server {
 			this.ps.setInt(2, this.sessionId);
 			this.ps.setString(3, nickname);
 			this.ps.executeUpdate();
-		}
-		catch (SQLException exc) {
-			exc.printStackTrace();
-		}
 	}
 
 	public void sendPersonalMsg(ClientHandler from, String nickTo, String msg) {
