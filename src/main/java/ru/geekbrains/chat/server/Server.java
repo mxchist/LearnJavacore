@@ -10,6 +10,7 @@ public class Server {
 	private Vector<ClientHandler> clients;
 	public Connection connection;
 	private Statement stmt;
+	private PreparedStatement ps;
 	private int sessionId;
 	private int clientSessionId;
 
@@ -83,14 +84,14 @@ public class Server {
 
 	public void logNewClientSessionId(String nickname, int clientSessionId) {
 		try {
-			PreparedStatement ps = connection.prepareStatement(
+			this.ps = connection.prepareStatement(
 					"insert into main.user_session(user_session_id, server_session_id, nickname)\n" +
 							"values(?, ?, ?);"
 			);
-			ps.setInt(1, clientSessionId);
-			ps.setInt(2, this.sessionId);
-			ps.setString(3, nickname);
-			ps.executeUpdate();
+			this.ps.setInt(1, clientSessionId);
+			this.ps.setInt(2, this.sessionId);
+			this.ps.setString(3, nickname);
+			this.ps.executeUpdate();
 		}
 		catch (SQLException exc) {
 			exc.printStackTrace();
@@ -108,12 +109,17 @@ public class Server {
 		from.sendMsg("Клиент с ником " + nickTo + " не найден в чате");
 	}
 
-	public void broadcastMsg(ClientHandler from, String msg) {
+	public void broadcastMsg(ClientHandler from, String msg) throws SQLException {
 		for (ClientHandler cl : clients) {
 			if (!cl.checkBlackList(from.getNick())) {
 				cl.sendMsg(msg);
 			}
 		}
+			this.ps = this.connection.prepareStatement("insert into main.messages_broadcast(server_session_id, message)" +
+					"values(?, ?)");
+			this.ps.setInt(1, this.sessionId);
+			this.ps.setString(2, msg);
+			this.ps.executeUpdate();
 	}
 
 	public boolean isNickBusy(String nick) {
