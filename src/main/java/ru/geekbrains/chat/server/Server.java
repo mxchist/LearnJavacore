@@ -9,8 +9,7 @@ import java.util.Vector;
 public class Server {
 	private Vector<ClientHandler> clients;
 	public Connection connection;
-	private Statement stmt;
-	private PreparedStatement ps;
+
 	private int sessionId;
 	private int clientSessionId;
 
@@ -52,7 +51,6 @@ public class Server {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			this.connection = DriverManager.getConnection("jdbc:sqlite:users.db");
-			stmt = connection.createStatement();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -60,7 +58,7 @@ public class Server {
 
 	public void disconnect() {
 		try {
-			connection.close();
+			this.connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -68,11 +66,12 @@ public class Server {
 	
 	private void logNewSessionId() {
 		try {
-			this.stmt.executeUpdate(
+			Statement stmt = this.connection.createStatement();
+			stmt.executeUpdate(
 					"insert into main.server_session\n" +
 							"default values;\n" +
 							"\n");
-			ResultSet rs = this.stmt.executeQuery("select last_insert_rowid();");
+			ResultSet rs = stmt.executeQuery("select last_insert_rowid();");
 			if (rs.next()) {
 				this.sessionId = rs.getInt(1);
 			}
@@ -83,14 +82,15 @@ public class Server {
 	}
 
 	public void logNewClientSessionId(String nickname, int clientSessionId) throws SQLException {
-			this.ps = connection.prepareStatement(
+		PreparedStatement ps;
+		ps = this.connection.prepareStatement(
 					"insert into main.user_session(user_session_id, server_session_id, nickname)\n" +
 							"values(?, ?, ?);"
 			);
-			this.ps.setInt(1, clientSessionId);
-			this.ps.setInt(2, this.sessionId);
-			this.ps.setString(3, nickname);
-			this.ps.executeUpdate();
+		ps.setInt(1, clientSessionId);
+		ps.setInt(2, this.sessionId);
+		ps.setString(3, nickname);
+		ps.executeUpdate();
 	}
 
 	public void sendPersonalMsg(ClientHandler from, String nickTo, String msg) {
@@ -110,11 +110,17 @@ public class Server {
 				cl.sendMsg(msg);
 			}
 		}
-			this.ps = this.connection.prepareStatement("insert into main.messages_broadcast(server_session_id, message)" +
+		PreparedStatement ps;
+		ps = this.connection.prepareStatement("insert into main.messages_broadcast(server_session_id, message)" +
 					"values(?, ?)");
-			this.ps.setInt(1, this.sessionId);
-			this.ps.setString(2, msg);
-			this.ps.executeUpdate();
+		ps.setInt(1, this.sessionId);
+		ps.setString(2, msg);
+		ps.executeUpdate();
+	}
+
+	public ResultSet getBroadcastMessagesHistory (String nickname) throws SQLException {
+		Statement stmt;
+		stmt = this.connection.createStatement();
 	}
 
 	public boolean isNickBusy(String nick) {
