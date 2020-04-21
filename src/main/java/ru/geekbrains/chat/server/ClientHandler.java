@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,8 @@ public class ClientHandler {
     private DataOutputStream out;
     private DataInputStream in;
     private String nick;
-    private static int sessionId;
+    private static int maxSessionId;
+    private int sessionId;
 
     List<String> blackList;
 
@@ -41,9 +43,11 @@ public class ClientHandler {
                                 if (!server.isNickBusy(newNick)) {
                                     sendMsg("/authok");
                                     nick = newNick;
-                                    sessionId++;
+									sessionId = ++maxSessionId;
+
                                     server.logNewClientSessionId(nick, sessionId);
                                     server.subscribe(this);
+                                    fillBroadcastMessagePane();
                                     break;
                                 } else {
                                     sendMsg("Учетная запись уже используется");
@@ -75,7 +79,7 @@ public class ClientHandler {
                         }
                         System.out.println("Client: " + str);
                     }
-                } catch (IOException e) {
+                } catch (IOException | SQLException e) {
                     e.printStackTrace();
                 } finally {
                     try {
@@ -93,10 +97,14 @@ public class ClientHandler {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    server.unsubscribe(this);
+                    try {
+                        server.unsubscribe(this);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }).start();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -105,11 +113,18 @@ public class ClientHandler {
         return blackList.contains(nick);
     }
 
-    public void sendMsg(String msg) {
-        try {
-            out.writeUTF(msg);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void sendMsg(String msg) throws IOException {
+        out.writeUTF(msg);
+    }
+
+    private void fillBroadcastMessagePane()  throws SQLException, IOException {
+        ResultSet rs = server.getBroadcastMessagesHistory(nick);
+        while (rs.next()) {
+            out.writeUTF(rs.getString("message"));
         }
     }
+
+    public int getSessionId () {
+    	return this.sessionId;
+	}
 }
