@@ -15,7 +15,8 @@ public class ClientHandler {
     private DataOutputStream out;
     private DataInputStream in;
     private String nick;
-    private static int sessionId;
+    private static int maxSessionId;
+    private int sessionId;
 
     List<String> blackList;
 
@@ -42,7 +43,7 @@ public class ClientHandler {
                                 if (!server.isNickBusy(newNick)) {
                                     sendMsg("/authok");
                                     nick = newNick;
-                                    sessionId++;
+									sessionId = maxSessionId++;
 
                                     server.logNewClientSessionId(nick, sessionId);
                                     server.subscribe(this);
@@ -122,4 +123,8 @@ public class ClientHandler {
             out.writeUTF(rs.getString("message"));
         }
     }
+
+    public int getSessionId () {
+    	return this.sessionId;
+	}
 }

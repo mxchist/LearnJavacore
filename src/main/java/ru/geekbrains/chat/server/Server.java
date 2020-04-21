@@ -11,7 +11,6 @@ public class Server {
 	public Connection connection;
 
 	private int sessionId;
-	private int clientSessionId;
 
 	public Server() {
 		clients = new Vector<>();
@@ -23,10 +22,8 @@ public class Server {
 			server = new ServerSocket(8189);
 			System.out.println("Сервер запущен. Ожидаем клиентов...");
 			logNewSessionId();
-			this.clientSessionId = 0;
 			while (true) {
 				socket = server.accept();
-				this.clientSessionId++;
 				System.out.println("Клиент подключился");
 				new ClientHandler(this, socket);
 			}
@@ -93,11 +90,28 @@ public class Server {
 		ps.executeUpdate();
 	}
 
-	public void sendPersonalMsg(ClientHandler from, String nickTo, String msg) throws IOException {
-		for (ClientHandler cl : clients) {
-			if (cl.getNick().equals(nickTo)) {
-				cl.sendMsg("from " + from.getNick() + ": " + msg);
-				from.sendMsg("to " + nickTo + ": " + msg);
+	public void sendPersonalMsg(ClientHandler from, String nickTo, String msg) throws SQLException, IOException {
+		for (ClientHandler to : clients) {
+			if (to.getNick().equals(nickTo)) {
+				String messageTo = "from " + from.getNick() + ": " + msg, messageFrom = "to " + nickTo + ": " + msg;
+				to.sendMsg(messageTo);
+				from.sendMsg(messageFrom);
+
+				PreparedStatement ps;
+				ps = this.connection.prepareStatement(
+						"insert into main.messages_personal (sent_user_session_id, recieved_user_session_id, message)\n" +
+								"values(?, ?, ?);"
+				);
+				ps.setInt(1, from.getSessionId());
+				ps.setInt(2, to.getSessionId());
+				ps.setString(3, messageTo);
+				ps.executeUpdate();
+
+				ps.setInt(1, to.getSessionId());
+				ps.setInt(2, from.getSessionId());
+				ps.setString(3, messageFrom);
+				ps.executeUpdate();
+
 				return;
 			}
 		}
@@ -117,7 +131,7 @@ public class Server {
 		ps.setString(2, msg);
 		ps.executeUpdate();
 	}
-
+	
 	public ResultSet getBroadcastMessagesHistory (String nickname) throws SQLException {
 		PreparedStatement ps;
 		ps = this.connection.prepareStatement("select\n" +
