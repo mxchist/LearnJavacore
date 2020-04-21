@@ -127,6 +127,7 @@ public class Server {
 				"where us.nickname = ?" +
 				"order by mb.server_session_id asc\n" +
 				"    , us.creation_time asc ");
+		ps.setString(1, nickname);
 		return ps.executeQuery();
 	}
 
