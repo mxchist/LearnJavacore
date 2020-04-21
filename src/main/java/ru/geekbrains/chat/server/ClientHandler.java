@@ -15,8 +15,7 @@ public class ClientHandler {
     private DataOutputStream out;
     private DataInputStream in;
     private String nick;
-    private static int maxSessionId;
-    private int sessionId;
+    private static int sessionId;
 
     List<String> blackList;
 
@@ -43,11 +42,10 @@ public class ClientHandler {
                                 if (!server.isNickBusy(newNick)) {
                                     sendMsg("/authok");
                                     nick = newNick;
-									sessionId = ++maxSessionId;
+                                    sessionId++;
 
                                     server.logNewClientSessionId(nick, sessionId);
                                     server.subscribe(this);
-                                    fillBroadcastMessagePane();
                                     break;
                                 } else {
                                     sendMsg("Учетная запись уже используется");
@@ -117,14 +115,4 @@ public class ClientHandler {
         out.writeUTF(msg);
     }
 
-    private void fillBroadcastMessagePane()  throws SQLException, IOException {
-        ResultSet rs = server.getBroadcastMessagesHistory(nick);
-        while (rs.next()) {
-            out.writeUTF(rs.getString("message"));
-        }
-    }
-
-    public int getSessionId () {
-    	return this.sessionId;
-	}
 }
