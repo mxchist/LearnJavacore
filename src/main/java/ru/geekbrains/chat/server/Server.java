@@ -118,6 +118,19 @@ public class Server {
 		from.sendMsg("Клиент с ником " + nickTo + " не найден в чате");
 	}
 
+	public ResultSet getPersonalMessagesHistory (String nickname) throws SQLException {
+		PreparedStatement ps;
+		ps = this.connection.prepareStatement("select\n" +
+				"mb.message\n" +
+				"from main.user_session  as us\n" +
+				"inner join main.messages_broadcast as mb on mb.server_session_id = us.server_session_id\n" +
+				"where us.nickname = ?" +
+				"order by mb.server_session_id asc\n" +
+				"    , us.creation_time asc ");
+		ps.setString(1, nickname);
+		return ps.executeQuery();
+	}
+
 	public void broadcastMsg(ClientHandler from, String msg) throws SQLException,  IOException {
 		for (ClientHandler cl : clients) {
 			if (!cl.checkBlackList(from.getNick())) {
