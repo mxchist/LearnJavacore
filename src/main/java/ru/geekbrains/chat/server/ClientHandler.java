@@ -47,7 +47,7 @@ public class ClientHandler {
 
                                     server.logNewClientSessionId(nick, sessionId);
                                     server.subscribe(this);
-                                    fillBroadcastMessagePane();
+									fillMessagePane();
                                     break;
                                 } else {
                                     sendMsg("Учетная запись уже используется");
@@ -123,6 +123,16 @@ public class ClientHandler {
             out.writeUTF(rs.getString("message"));
         }
     }
+
+	private void fillMessagePane()  throws SQLException, IOException {
+		ResultSet rs = server.getMessagesHistory(nick);
+		while (rs.next()) {
+			String message = rs.getString(1);
+//			if (message.startsWith("to " + nick + ": ")		|| message.startsWith("from " + nick + ": "))
+//				continue;
+			out.writeUTF(message);
+		}
+	}
 
     public int getSessionId () {
     	return this.sessionId;

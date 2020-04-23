@@ -118,15 +118,24 @@ public class Server {
 		from.sendMsg("Клиент с ником " + nickTo + " не найден в чате");
 	}
 
-	public ResultSet getPersonalMessagesHistory (String nickname) throws SQLException {
+	public ResultSet getMessagesHistory (String nickname) throws SQLException {
 		PreparedStatement ps;
-		ps = this.connection.prepareStatement("select\n" +
-				"mb.message\n" +
+		ps = this.connection.prepareStatement("select message from (\n"+
+				"select\n" +
+				"mb.message, mb.creation_time, us.nickname\n" +
 				"from main.user_session  as us\n" +
 				"inner join main.messages_broadcast as mb on mb.server_session_id = us.server_session_id\n" +
-				"where us.nickname = ?" +
-				"order by mb.server_session_id asc\n" +
-				"    , us.creation_time asc ");
+				"\n" +
+				"union\n" +
+				"select\n" +
+				"mp.message, mp.creation_time, us.nickname\n" +
+				"from main.user_session  as us\n" +
+				"inner join main.messages_personal as mp on mp.sent_user_session_id = us.user_session_id\n" +
+				"or mp.recieved_user_session_id = us.user_session_id\n" +
+				") as t\n" +
+				"where t.nickname = ?\n" +
+				"order by creation_time"
+		);
 		ps.setString(1, nickname);
 		return ps.executeQuery();
 	}
