@@ -66,7 +66,6 @@ public class ClientHandler {
                             if (tokens[2].equals(tokens[3])) {
                                 if (authService.addUser(tokens[1], tokens[2], tokens[4])) {
                                     sendMsg("/regok");
-                                    break;
                                 }
                                 else sendMsg("Ошибка на стороне БД");
                             }
