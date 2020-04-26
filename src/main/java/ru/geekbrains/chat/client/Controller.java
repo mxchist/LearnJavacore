@@ -38,13 +38,25 @@ public class Controller implements Initializable {
     PasswordField passwordField;
 
     @FXML
-    HBox hashPanel;
+    HBox loginPanel;
 
     @FXML
     private Label userName;
 
     @FXML
     ListView<String> clientsList;
+
+    @FXML
+    TextField newLoginField;
+
+    @FXML
+    TextField newPasswordField;
+
+    @FXML
+    TextField newPasswordFieldAgain;
+
+    @FXML
+    TextField newNickField;
 
     @FXML private void updateTitle(String newTitle) {
         Stage primStage = (Stage) loginField.getScene().getWindow();
@@ -77,6 +89,8 @@ public class Controller implements Initializable {
             upperPanel.setManaged(true);
             bottomPanel.setVisible(false);
             bottomPanel.setManaged(false);
+            loginPanel.setVisible(false);
+            loginPanel.setManaged(false);
             clientsList.setVisible(false);
             clientsList.setManaged(false);
         } else {
@@ -84,9 +98,28 @@ public class Controller implements Initializable {
             upperPanel.setManaged(false);
             bottomPanel.setVisible(true);
             bottomPanel.setManaged(true);
+            loginPanel.setVisible(false);
+            loginPanel.setManaged(false);
             clientsList.setVisible(true);
             clientsList.setManaged(true);
         }
+    }
+
+    public void showNewLoginPanel(boolean expose) {
+        loginPanel.setVisible(expose);
+        loginPanel.setManaged(expose);
+
+        if (expose) {
+            upperPanel.setVisible(false);
+            upperPanel.setManaged(false);
+        } else {
+            upperPanel.setVisible(true);
+            upperPanel.setManaged(true);
+        }
+    }
+
+    public void showNewLoginPanel() {
+        showNewLoginPanel(true);
     }
 
     public void connect() {
@@ -103,7 +136,10 @@ public class Controller implements Initializable {
                         if (str.startsWith("/authok")) {
                             setAuthorized(true);
                             break;
-                        } else {
+                        } else if (str.startsWith("/regok")) {
+                            showNewLoginPanel(false);
+                        }
+                        else {
                             for (TextArea o : textAreas) {
                                 o.appendText(str + "\n");
                             }
@@ -163,6 +199,26 @@ public class Controller implements Initializable {
             updateTitle(loginField.getText());
 //            loginField.clear();
             passwordField.clear();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createNewUser() {
+        if (socket == null || socket.isClosed()) {
+            connect();
+        }
+        try {
+            updateTitle("Регистрация");
+            out.writeUTF("/register " + newLoginField.getText()
+                    + " " + newPasswordField.getText()
+                    + " " + newPasswordFieldAgain.getText()
+                    + " " + newNickField.getText()
+            );
+            newPasswordField.clear();
+            newPasswordFieldAgain.clear();
+            newNickField.clear();
+            showNewLoginPanel(false);
         } catch (IOException e) {
             e.printStackTrace();
         }

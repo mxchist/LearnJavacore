@@ -17,7 +17,7 @@ public class AuthService {
 
     }
 
-    public void addUser(String login, String pass, String nick) {
+    public boolean addUser(String login, String pass, String nick) {
         try {
             String query = "INSERT INTO users (login, password, nickname) VALUES (?, ?, ?);";
             PreparedStatement ps = connection.prepareStatement(query);
@@ -25,8 +25,10 @@ public class AuthService {
             ps.setInt(2, pass.hashCode());
             ps.setString(3, nick);
             ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

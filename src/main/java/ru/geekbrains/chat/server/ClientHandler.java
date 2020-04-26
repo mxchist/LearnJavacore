@@ -55,7 +55,25 @@ public class ClientHandler {
                                 sendMsg("Неверный логин/пароль");
                             }
                         }
+                    else if (str.startsWith("/register")) {
+                            String[] tokens = str.split(" ");
+                            AuthService authService = new AuthService(server.connection);
+                            String isNickExists = authService.getNickByLoginAndPass(tokens[1], tokens[2]);
+                            if (isNickExists != null) {
+                                sendMsg("Учетная запись уже существует");
+                            }
+
+                            if (tokens[2].equals(tokens[3])) {
+                                if (authService.addUser(tokens[1], tokens[2], tokens[4])) {
+                                    sendMsg("/regok");
+                                    break;
+                                }
+                                else sendMsg("Ошибка на стороне БД");
+                            }
+                            else sendMsg("Пароли не соответствуют друг другу");
+                        }
                     }
+
                     while (true) {
                         String str = in.readUTF();
                         if (str.startsWith("/")) {

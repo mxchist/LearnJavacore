@@ -14,6 +14,7 @@
         <TextField fx:id="loginField" promptText="Логин" HBox.hgrow="ALWAYS" />
         <PasswordField fx:id="passwordField" onAction="#tryToAuth" promptText="Пароль" />
         <Button onAction="#tryToAuth" text="Авторизоваться" />
+        <Button onAction="#showNewLoginPanel" text="Зарегистрироваться" />
     </HBox>
     <HBox VBox.vgrow="ALWAYS">
         <VBox HBox.hgrow="ALWAYS">
@@ -25,6 +26,17 @@
         </VBox>
         <ListView fx:id="clientsList" onMouseClicked="#selectClient" prefWidth="400" />
         <Label fx:id="userName" text="userName" styleClass="userLogin"/>
+    </HBox>
+    <HBox fx:id="loginPanel" VBox.vgrow="ALWAYS">
+        <VBox HBox.hgrow="ALWAYS">
+            <TextField fx:id="newLoginField" promptText="Логин" HBox.hgrow="ALWAYS" />
+            <PasswordField fx:id="newPasswordField" onAction="#tryToAuth" promptText="Пароль" />
+            <PasswordField fx:id="newPasswordFieldAgain" onAction="#tryToAuth" promptText="Повторите пароль" />
+            <TextField fx:id="newNickField" promptText="Новый ник" HBox.hgrow="ALWAYS" />
+        </VBox>
+        <VBox HBox.hgrow="ALWAYS">
+            <Button onAction="#createNewUser" text="Авторизоваться" />
+        </VBox>
     </HBox>
 
 </VBox>
