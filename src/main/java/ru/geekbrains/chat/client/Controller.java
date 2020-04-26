@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 
 import java.io.DataInputStream;
@@ -44,6 +45,12 @@ public class Controller implements Initializable {
 
     @FXML
     ListView<String> clientsList;
+
+    @FXML private void updateTitle(String newTitle) {
+        Stage primStage = (Stage) loginField.getScene().getWindow();
+        primStage.setTitle(newTitle);
+
+    }
 
     Socket socket;
     DataInputStream in;
@@ -153,6 +160,7 @@ public class Controller implements Initializable {
         }
         try {
             out.writeUTF("/auth " + loginField.getText() + " " + passwordField.getText());
+            updateTitle(loginField.getText());
 //            loginField.clear();
             passwordField.clear();
         } catch (IOException e) {
@@ -162,7 +170,8 @@ public class Controller implements Initializable {
 
     public void selectClient(MouseEvent mouseEvent) {
         if(mouseEvent.getClickCount() == 2) {
-            MiniStage ms = new MiniStage(clientsList.getSelectionModel().getSelectedItem(), out, textAreas);
+            String selectedItem = clientsList.getSelectionModel().getSelectedItem();
+            MiniStage ms = new MiniStage(selectedItem, out, textAreas);
             ms.show();
         }
     }
