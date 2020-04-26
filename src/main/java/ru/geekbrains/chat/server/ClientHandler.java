@@ -43,9 +43,8 @@ public class ClientHandler {
                                 if (!server.isNickBusy(newNick)) {
                                     sendMsg("/authok");
                                     nick = newNick;
-									sessionId = maxSessionId++;
 
-                                    server.logNewClientSessionId(nick, sessionId);
+                                    this.sessionId = server.logNewClientSessionId(nick);
                                     server.subscribe(this);
 									fillMessagePane();
                                     break;

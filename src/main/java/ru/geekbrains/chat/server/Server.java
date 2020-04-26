@@ -78,16 +78,20 @@ public class Server {
 		}
 	}
 
-	public void logNewClientSessionId(String nickname, int clientSessionId) throws SQLException {
+	public int logNewClientSessionId(String nickname) throws SQLException {
 		PreparedStatement ps;
 		ps = this.connection.prepareStatement(
-					"insert into main.user_session(user_session_id, server_session_id, nickname)\n" +
-							"values(?, ?, ?);"
+					"insert into main.user_session(server_session_id, nickname)\n" +
+							"values(?, ?);"
 			);
-		ps.setInt(1, clientSessionId);
-		ps.setInt(2, this.sessionId);
-		ps.setString(3, nickname);
+		ps.setInt(1, this.sessionId);
+		ps.setString(2, nickname);
 		ps.executeUpdate();
+		ResultSet rs = this.connection.createStatement().executeQuery("select last_insert_rowid();");
+		if (rs.next()) {
+			return rs.getInt(1);
+		}
+		return 0;
 	}
 
 	public void sendPersonalMsg(ClientHandler from, String nickTo, String msg) throws SQLException, IOException {
