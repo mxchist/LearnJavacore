@@ -47,7 +47,7 @@ public class Server {
 	public void connect() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			this.connection = DriverManager.getConnection("jdbc:sqlite:users.db");
+			this.connection = DriverManager.getConnection("jdbc:sqlite:backend_DB.db");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
