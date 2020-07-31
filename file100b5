@@ -1,0 +1,3 @@
+, and doesn't care!
+
+When I try to print with s.o.p((char) k) the result is not an Unicode character
