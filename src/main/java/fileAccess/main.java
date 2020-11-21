@@ -5,7 +5,8 @@ import java.io.SequenceInputStream;
 import java.util.ArrayList;
 import java.io.InputStream;
 import java.util.Collections;
-
+import java.io.RandomAccessFile;
+import java.util.Scanner;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +20,8 @@ public class main {
 
 		exercise1();
 		exercise2();
+		exercise3();
+		exercise3_slow1();
 	}
 
 	private static void exercise1() {
@@ -64,10 +67,89 @@ public class main {
 			while ((x = sis.read()) != -1) {
 				out.print((char)x);
 			}
+			sis.close();
 		}
 		catch (IOException exc ) {
 			exc.printStackTrace();
 		}
 
+		out.println();
 	}
+
+	private static void exercise3() {
+		long page;
+		int pageSize = 1800;
+		String answer = "y";
+		out.println("Enter the file path:");
+		String filePath = new Scanner(System.in).next();
+		//d:\Max\Documents\Driver.txt
+		try (RandomAccessFile raf = new RandomAccessFile(filePath, "r")) {
+			while (answer.equals("y"))
+			{
+				out.println("Введите номер страницы для чтения");
+				Scanner sc = new Scanner(System.in);
+				page = sc.nextInt();
+
+				int x;
+				byte[] arr = new byte[pageSize];
+				raf.seek((page -1) * pageSize);
+				if ((raf.read(arr)) > 0) {
+				out.print( new String(arr, 0, pageSize));
+
+			};
+			out.println("\nПрочитать ещё страницу? Введите y / n");
+			answer = sc.next();
+			if (!answer.equals("y")) {
+				answer = "n";
+			}
+			}
+		}
+		catch (FileNotFoundException exc) {
+			exc.printStackTrace();
+		}
+		catch (IOException exc) {
+			exc.printStackTrace();
+		}
+
+		out.println();
+	}
+
+	private static void exercise3_slow1() {
+		long page;
+		int pageSize = 1800;
+		String answer = "y";
+		out.println("Enter the file path:");
+		String filePath = new Scanner(System.in).next();
+		//d:\Max\Documents\Driver.txt
+		try (FileInputStream raf = new FileInputStream(filePath)) {
+			while (answer.equals("y"))
+			{
+				out.println("Введите номер страницы для чтения");
+				Scanner sc = new Scanner(System.in);
+				page = sc.nextInt();
+
+				int x, n = 1;
+				while (n++ <= pageSize * (page) & (x = raf.read()) != -1) {
+					if (n < pageSize * page)
+						continue;
+
+					out.print( (char)x);
+				};
+				out.println("\nПрочитать ещё страницу? Введите y / n");
+				answer = sc.next();
+				if (!answer.equals("y")) {
+					answer = "n";
+				}
+			}
+		}
+		catch (FileNotFoundException exc) {
+			exc.printStackTrace();
+		}
+		catch (IOException exc) {
+			exc.printStackTrace();
+		}
+
+		out.println();
+	}
+
 }
