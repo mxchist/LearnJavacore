@@ -13,6 +13,7 @@ import java.io.IOException;
 
 
 import static java.lang.System.out;
+import static java.lang.System.currentTimeMillis;
 
 public class main {
 
@@ -77,63 +78,30 @@ public class main {
 	}
 
 	private static void exercise3() {
+		//exercise 3
+		//Написать консольное приложение, которое умеет постранично читать текстовые файлы (размером > 10 mb).
+		// Вводим страницу (за страницу можно принять 1800 символов), программа выводит ее в консоль.
+		// Контролируем время выполнения: программа не должна загружаться дольше 10 секунд, а чтение – занимать свыше 5 секунд.
+
 		long page;
 		int pageSize = 1800;
 		String answer = "y";
 		out.println("Enter the file path:");
 		String filePath = new Scanner(System.in).next();
 		//d:\Max\Documents\Driver.txt
-		try (RandomAccessFile raf = new RandomAccessFile(filePath, "r")) {
-			while (answer.equals("y"))
-			{
-				out.println("Введите номер страницы для чтения");
-				Scanner sc = new Scanner(System.in);
-				page = sc.nextInt();
+		while (answer.equals("y"))
+		{
+			try (RandomAccessFile raf = new RandomAccessFile(filePath, "r")) {
+					out.println("Введите номер страницы для чтения");
+					Scanner sc = new Scanner(System.in);
+					page = sc.nextInt();
 
-				int x;
-				byte[] arr = new byte[pageSize];
-				raf.seek((page -1) * pageSize);
-				if ((raf.read(arr)) > 0) {
-				out.print( new String(arr, 0, pageSize));
+					int x;
+					byte[] arr = new byte[pageSize];
+					raf.seek((page -1) * pageSize);
+					if ((raf.read(arr)) > 0) {
+					out.print( new String(arr, 0, pageSize));
 
-			};
-			out.println("\nПрочитать ещё страницу? Введите y / n");
-			answer = sc.next();
-			if (!answer.equals("y")) {
-				answer = "n";
-			}
-			}
-		}
-		catch (FileNotFoundException exc) {
-			exc.printStackTrace();
-		}
-		catch (IOException exc) {
-			exc.printStackTrace();
-		}
-
-		out.println();
-	}
-
-	private static void exercise3_slow1() {
-		long page;
-		int pageSize = 1800;
-		String answer = "y";
-		out.println("Enter the file path:");
-		String filePath = new Scanner(System.in).next();
-		//d:\Max\Documents\Driver.txt
-		try (FileInputStream raf = new FileInputStream(filePath)) {
-			while (answer.equals("y"))
-			{
-				out.println("Введите номер страницы для чтения");
-				Scanner sc = new Scanner(System.in);
-				page = sc.nextInt();
-
-				int x, n = 1;
-				while (n++ <= pageSize * (page) & (x = raf.read()) != -1) {
-					if (n < pageSize * page)
-						continue;
-
-					out.print( (char)x);
 				};
 				out.println("\nПрочитать ещё страницу? Введите y / n");
 				answer = sc.next();
@@ -141,12 +109,57 @@ public class main {
 					answer = "n";
 				}
 			}
+			catch (FileNotFoundException exc) {
+				exc.printStackTrace();
+			}
+			catch (IOException exc) {
+				exc.printStackTrace();
+			}
 		}
-		catch (FileNotFoundException exc) {
-			exc.printStackTrace();
-		}
-		catch (IOException exc) {
-			exc.printStackTrace();
+
+		out.println();
+	}
+
+	private static void exercise3_slow1() {
+		//exercise 3
+		//Осознанно медленное приложение. Проседание производительности наблюдается со страницы 500
+		long page;
+		int pageSize = 1800;			// скольким символам равна одна страница
+		String answer = "y";			// ответ для анализа, выводить ли страницу
+		out.println("Enter the file path:");
+		String filePath = new Scanner(System.in).next();	// путь файла, который будем читать
+		//d:\Max\Documents\Driver.txt
+		while (answer.equals("y"))		// ответ для анализа соответствует ли "да"
+		{
+			try (FileInputStream raf = new FileInputStream(filePath)) {
+				out.println("Введите номер страницы для чтения");
+				Scanner sc = new Scanner(System.in);
+				page = sc.nextInt();		// считываем порядковый номер страницы
+
+				int x; 						// переменная для записи байта из потока
+				int n = 0;					// счётчик для количества считываний из потока
+				long t1 = currentTimeMillis();
+
+				while (++n <= pageSize * (page) 			// увеличиваем n и проверяем, что оно не превысило нижнюю границу страницы
+						& (x = raf.read()) != -1) {			// считываем байт
+					if (n < pageSize * (page-1))			// если n не дошло до верхней границы страницы, пропускаем цикл
+						continue;
+
+					out.print( (char)x);
+				};
+				out.printf("%nВремя чтения страницы %d составило %d миллисекунд %n", page, currentTimeMillis() - t1);
+				out.println("\nПрочитать ещё страницу? Введите y / n");
+				answer = sc.next();
+				if (!answer.equals("y")) {
+					answer = "n";
+				}
+			}
+			catch (FileNotFoundException exc) {
+				exc.printStackTrace();
+			}
+			catch (IOException exc) {
+				exc.printStackTrace();
+			}
 		}
 
 		out.println();
