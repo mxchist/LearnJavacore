@@ -21,8 +21,9 @@ public class main {
 
 		exercise1();
 		exercise2();
-		exercise3();
-		exercise3_slow1();
+//		exercise3();
+//		exercise3_slow1();
+		exercise3_slow2();
 	}
 
 	private static void exercise1() {
@@ -147,6 +148,53 @@ public class main {
 
 					out.print( (char)x);
 				};
+				out.printf("%nВремя чтения страницы %d составило %d миллисекунд %n", page, currentTimeMillis() - t1);
+				out.println("\nПрочитать ещё страницу? Введите y / n");
+				answer = sc.next();
+				if (!answer.equals("y")) {
+					answer = "n";
+				}
+			}
+			catch (FileNotFoundException exc) {
+				exc.printStackTrace();
+			}
+			catch (IOException exc) {
+				exc.printStackTrace();
+			}
+		}
+
+		out.println();
+	}
+
+	private static void exercise3_slow2() {
+		//exercise 3
+		//Попытка сделать ещ1 один вариант осознанно медленного приложения. В отличие от exercise3(),
+		// чтение производится не в байтовый массив, а переменную из одного байта. В out.print() также
+		// выводится по одному байту, а не формируется строка из биайтового массива. Результат - замедлить
+		// не получилось, что 5 страница, что 5000 страница выводятся за одно короткое время ~ 7 мсек
+		long page;
+		int pageSize = 1800;
+		String answer = "y";
+		out.println("Enter the file path:");
+		String filePath = new Scanner(System.in).next();
+		//d:\Max\Documents\Driver.txt
+		while (answer.equals("y"))
+		{
+			try (RandomAccessFile raf = new RandomAccessFile(filePath, "r")) {
+				out.println("Введите номер страницы для чтения");
+				Scanner sc = new Scanner(System.in);
+				page = sc.nextInt();
+
+				int x;
+				int n = 0;					// счётчик для количества считываний из потока
+				long t1 = currentTimeMillis();
+
+				raf.seek((page -1) * pageSize);
+				while ( (++n <= pageSize ) & ( x = raf.read()) != -1) {
+					out.print( (char)x );
+
+				};
+
 				out.printf("%nВремя чтения страницы %d составило %d миллисекунд %n", page, currentTimeMillis() - t1);
 				out.println("\nПрочитать ещё страницу? Введите y / n");
 				answer = sc.next();
