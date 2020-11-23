@@ -6,7 +6,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import java.io.File;
 
 
 import java.io.DataInputStream;
@@ -61,8 +64,13 @@ public class Controller implements Initializable {
     @FXML private void updateTitle(String newTitle) {
         Stage primStage = (Stage) loginField.getScene().getWindow();
         primStage.setTitle(newTitle);
-
     }
+
+    @FXML
+    VBox downloadPanel;
+
+    @FXML
+    Button yes;
 
     Socket socket;
     DataInputStream in;
@@ -80,6 +88,7 @@ public class Controller implements Initializable {
         setAuthorized(false);
         textAreas = new ArrayList<>();
         textAreas.add(chatArea);
+        this.downloadPanel.setVisible(false);
     }
 
     public void setAuthorized(boolean isAuthorized) {
@@ -158,7 +167,11 @@ public class Controller implements Initializable {
                                     }
                                 });
                             }
-                        } else {
+                        }
+                        if (str.startsWith("/putFile")) {
+                            this.downloadPanel.setVisible(true);
+                        }
+                        else {
                             chatArea.appendText(str + "\n");
                         }
                     }
@@ -230,5 +243,14 @@ public class Controller implements Initializable {
             MiniStage ms = new MiniStage(selectedItem, out, textAreas);
             ms.show();
         }
+    }
+
+    public void acceptDownloading() {      // приём файла, который отправил собеседник, после нажатия кнопки "да"
+        FileChooser fileChooser = new FileChooser();
+        File fileToDownload = fileChooser.showOpenDialog((MiniStage)yes.getScene().getWindow());
+    }
+
+    public void rejectDownloading() {       // отказ от загрузки
+        this.downloadPanel.setVisible(false);
     }
 }
