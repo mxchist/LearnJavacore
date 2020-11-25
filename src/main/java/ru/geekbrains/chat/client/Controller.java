@@ -6,7 +6,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
@@ -66,12 +65,6 @@ public class Controller implements Initializable {
         primStage.setTitle(newTitle);
     }
 
-    @FXML
-    VBox downloadPanel;
-
-    @FXML
-    Button yes;
-
     Socket socket;
     DataInputStream in;
     DataOutputStream out;
@@ -88,7 +81,6 @@ public class Controller implements Initializable {
         setAuthorized(false);
         textAreas = new ArrayList<>();
         textAreas.add(chatArea);
-        this.downloadPanel.setVisible(false);
     }
 
     public void setAuthorized(boolean isAuthorized) {
@@ -169,7 +161,8 @@ public class Controller implements Initializable {
                             }
                         }
                         if (str.startsWith("/putFile")) {
-                            this.downloadPanel.setVisible(true);
+//                            this.downloadPanel.setVisible(true);
+                            System.out.println("delete this");
                         }
                         else {
                             chatArea.appendText(str + "\n");
@@ -245,12 +238,12 @@ public class Controller implements Initializable {
         }
     }
 
-    public void acceptDownloading() {      // приём файла, который отправил собеседник, после нажатия кнопки "да"
-        FileChooser fileChooser = new FileChooser();
-        File fileToDownload = fileChooser.showOpenDialog((MiniStage)yes.getScene().getWindow());
-    }
-
-    public void rejectDownloading() {       // отказ от загрузки
-        this.downloadPanel.setVisible(false);
-    }
+//    public void acceptDownloading() {      // приём файла, который отправил собеседник, после нажатия кнопки "да"
+//        FileChooser fileChooser = new FileChooser();
+//        File fileToDownload = fileChooser.showOpenDialog((MiniStage)yes.getScene().getWindow());
+//    }
+//
+//    public void rejectDownloading() {       // отказ от загрузки
+//        this.downloadPanel.setVisible(false);
+//    }
 }
