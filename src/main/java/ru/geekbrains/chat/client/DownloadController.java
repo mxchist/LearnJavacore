@@ -28,8 +28,8 @@ public class DownloadController {
         DataInputStream in = ((FileDownloadStage)yes.getScene().getWindow()).in;
 
         FileChooser fileChooser = new FileChooser();
-        File fileToUpload = fileChooser.showOpenDialog(yes.getScene().getWindow());
-        try (FileOutputStream fos = new FileOutputStream(fileToUpload)) {
+        File fileToDownload = fileChooser.showOpenDialog(yes.getScene().getWindow());
+        try (FileOutputStream fos = new FileOutputStream(fileToDownload)) {
             new Thread(() -> {
                 int x;
                 try {
