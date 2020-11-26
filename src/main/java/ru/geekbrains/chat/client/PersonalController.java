@@ -38,17 +38,14 @@ public class PersonalController {
         FileChooser fileChooser = new FileChooser();
         File fileToUpload = fileChooser.showOpenDialog((MiniStage)btnUpload.getScene().getWindow());
         try (FileInputStream fis = new FileInputStream(fileToUpload)) {
-            new Thread( () -> {
-                int x;
+                byte b[];
                 try {
-                    while ((x = fis.read()) > -1) {
-                        out.write(x);
-                    }
+                    b = new byte[fis.available()];
+                        out.write(b);
                 }
                 catch (IOException exc) {
                     exc.printStackTrace();
                 }
-            }).start();
         }
         catch (IOException e) {
             e.printStackTrace();

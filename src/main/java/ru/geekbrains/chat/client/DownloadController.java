@@ -25,22 +25,20 @@ public class DownloadController {
     TextArea messageText;
 
     public void acceptDownloading() {
-        DataInputStream in = ((FileDownloadStage)yes.getScene().getWindow()).in;
+        DataInputStream fin = ((FileDownloadStage)yes.getScene().getWindow()).fin;
 
         FileChooser fileChooser = new FileChooser();
         File fileToDownload = fileChooser.showOpenDialog(yes.getScene().getWindow());
         try (FileOutputStream fos = new FileOutputStream(fileToDownload)) {
-            new Thread(() -> {
-                int x;
+                byte[] b;
                 try {
-                    while ((x = in.read()) > -1 ) {
-                        fos.write(x);
+                    b = new byte [fin.available()];
+                    if (fin.read(b) > 0) {
+                        fos.write(b);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            ).start();
 
         } catch (IOException e) {
             e.printStackTrace();
