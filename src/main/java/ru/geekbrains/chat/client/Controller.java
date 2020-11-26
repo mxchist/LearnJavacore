@@ -6,9 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import java.io.File;
 
 
 import java.io.DataInputStream;
@@ -67,7 +65,9 @@ public class Controller implements Initializable {
 
     Socket socket;
     DataInputStream in;
+    DataInputStream fin;
     DataOutputStream out;
+    DataOutputStream fout;
 
     final String IP_ADDRESS = "localhost";
     final int PORT = 8189;
@@ -161,8 +161,7 @@ public class Controller implements Initializable {
                             }
                         }
                         if (str.startsWith("/putFile")) {
-//                            this.downloadPanel.setVisible(true);
-                            System.out.println("delete this");
+                            FileDownloadStage fds = new FileDownloadStage(fin);
                         }
                         else {
                             chatArea.appendText(str + "\n");

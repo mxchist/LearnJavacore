@@ -13,7 +13,9 @@ public class ClientHandler {
     private Server server;
     private Socket socket;
     private DataOutputStream out;
+    private DataOutputStream fout;
     private DataInputStream in;
+    private DataInputStream fin;
     private String nick;
     private static int maxSessionId;
     private int sessionId;
@@ -28,8 +30,12 @@ public class ClientHandler {
         try {
             this.socket = socket;
             this.server = server;
+
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
+            this.fin = new DataInputStream(socket.getInputStream());
+            this.fout = new DataOutputStream(socket.getOutputStream());
+
             this.blackList = new ArrayList<>();
             new Thread(() -> {
                 try {
@@ -118,6 +124,18 @@ public class ClientHandler {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }
+            }).start();
+
+            //поток отвечающий за обмен файлами
+            new Thread( () -> {
+                byte b[];
+                try {
+                    b = new byte[fin.available()];
+                    fin.read(b);
+                }
+                catch (IOException exc) {
+                    exc.printStackTrace();
                 }
             }).start();
         } catch (IOException e) {

@@ -11,16 +11,16 @@ import java.io.IOException;
 import java.util.List;
 
 public class FileDownloadStage extends Stage {
-    String nickTo;
-    DataInputStream in;
+    String nickFrom;
+    DataInputStream fin;
 
-    public FileDownloadStage(String nickTo, DataInputStream in) {
-        this.nickTo = nickTo;
-        this.in = in;
+    public FileDownloadStage(String nickFrom, DataInputStream fin) {
+        this.nickFrom = nickFrom;
+        this.fin = fin;
         Parent root = null;
         try {
-//            root = FXMLLoader.load(getClass().getResource("personal.fxml"));
             root = FXMLLoader.load(getClass().getResource("/fxml/fileDownload.fxml"));
+            setTitle("Downloading file from " + nickFrom);
             Scene scene = new Scene(root, 200, 100);
             setScene(scene);
 
