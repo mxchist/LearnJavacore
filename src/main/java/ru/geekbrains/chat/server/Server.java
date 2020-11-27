@@ -201,4 +201,9 @@ public class Server {
 		clients.remove(client);
 		broadcastClientsList();
 	}
-}
+
+	public void sentPersonalFile(ClientHandler from, String nickTo, String msg) throws SQLException, IOException {
+		for (ClientHandler to : clients) {
+			if (to.getNick().equals(nickTo)) {
+
+			}

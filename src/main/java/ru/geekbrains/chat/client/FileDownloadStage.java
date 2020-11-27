@@ -6,15 +6,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
-import java.io.DataInputStream;
+import java.io.PipedInputStream;
 import java.io.IOException;
 import java.util.List;
 
 public class FileDownloadStage extends Stage {
     String nickFrom;
-    DataInputStream fin;
+    PipedInputStream fin;
 
-    public FileDownloadStage(String nickFrom, DataInputStream fin) {
+    public FileDownloadStage(String nickFrom, PipedInputStream fin) {
         this.nickFrom = nickFrom;
         this.fin = fin;
         Parent root = null;

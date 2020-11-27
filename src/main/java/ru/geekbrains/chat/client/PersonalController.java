@@ -34,7 +34,7 @@ public class PersonalController {
     }
 
     public void buttonClickUpload() {
-        DataOutputStream fout = ((MiniStage)btnUpload.getScene().getWindow()).fout;
+        PipedOutputStream fout = ((MiniStage)btnUpload.getScene().getWindow()).fout;
 
         FileChooser fileChooser = new FileChooser();
         File fileToUpload = fileChooser.showOpenDialog((MiniStage)btnUpload.getScene().getWindow());

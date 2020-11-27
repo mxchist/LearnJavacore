@@ -2,6 +2,8 @@ package ru.geekbrains.chat.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -13,9 +15,9 @@ public class ClientHandler {
     private Server server;
     private Socket socket;
     private DataOutputStream out;
-    private DataOutputStream fout;
+    private PipedOutputStream fout;
     private DataInputStream in;
-    private DataInputStream fin;
+    private PipedInputStream fin;
     private String nick;
     private static int maxSessionId;
     private int sessionId;
@@ -33,8 +35,8 @@ public class ClientHandler {
 
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
-            this.fin = new DataInputStream(socket.getInputStream());
-            this.fout = new DataOutputStream(socket.getOutputStream());
+            this.fin = new PipedInputStream();
+            this.fout = new PipedOutputStream();
 
             this.blackList = new ArrayList<>();
             new Thread(() -> {
@@ -148,6 +150,10 @@ public class ClientHandler {
     }
 
     public void sendMsg(String msg) throws IOException {
+        out.writeUTF(msg);
+    }
+
+    public void sendFile(String msg) throws IOException {
         out.writeUTF(msg);
     }
 
