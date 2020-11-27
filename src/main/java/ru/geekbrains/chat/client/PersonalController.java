@@ -18,12 +18,13 @@ public class PersonalController {
     @FXML
     TextArea textArea;
 
+    DataOutputStream out = ((MiniStage)btnSent.getScene().getWindow()).out;
+    String nickTo = ((MiniStage)btnSent.getScene().getWindow()).nickTo;
+
     public void btnClick() {
         if(!((MiniStage)btnSent.getScene().getWindow()).parentList.contains(textArea)) {
             ((MiniStage)btnSent.getScene().getWindow()).parentList.add(textArea);
         }
-        DataOutputStream out = ((MiniStage)btnSent.getScene().getWindow()).out;
-        String nickTo = ((MiniStage)btnSent.getScene().getWindow()).nickTo;
         try {
             out.writeUTF("/w " + nickTo + " " + textArea.getText());
             textArea.clear();
@@ -33,7 +34,7 @@ public class PersonalController {
     }
 
     public void buttonClickUpload() {
-        DataOutputStream out = ((MiniStage)btnUpload.getScene().getWindow()).out;
+        DataOutputStream fout = ((MiniStage)btnUpload.getScene().getWindow()).fout;
 
         FileChooser fileChooser = new FileChooser();
         File fileToUpload = fileChooser.showOpenDialog((MiniStage)btnUpload.getScene().getWindow());
@@ -41,7 +42,8 @@ public class PersonalController {
                 byte b[];
                 try {
                     b = new byte[fis.available()];
-                        out.write(b);
+                        fout.write(b);
+                        out.writeUTF("/putFile " + nickTo);
                 }
                 catch (IOException exc) {
                     exc.printStackTrace();

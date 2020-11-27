@@ -161,7 +161,9 @@ public class Controller implements Initializable {
                             }
                         }
                         if (str.startsWith("/putFile")) {
-                            FileDownloadStage fds = new FileDownloadStage(fin);
+                            String[] tokens = str.split(" ");
+                            FileDownloadStage fds = new FileDownloadStage(tokens[1], fin);
+                            fds.show();
                         }
                         else {
                             chatArea.appendText(str + "\n");
@@ -232,7 +234,7 @@ public class Controller implements Initializable {
     public void selectClient(MouseEvent mouseEvent) {
         if(mouseEvent.getClickCount() == 2) {
             String selectedItem = clientsList.getSelectionModel().getSelectedItem();
-            MiniStage ms = new MiniStage(selectedItem, out, textAreas);
+            MiniStage ms = new MiniStage(selectedItem, out, fout, textAreas);
             ms.show();
         }
     }
