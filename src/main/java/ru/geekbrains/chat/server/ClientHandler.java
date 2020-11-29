@@ -90,8 +90,11 @@ public class ClientHandler {
                             }
                             if (str.startsWith("/w ")) { // /w nick3 lsdfhldf sdkfjhsdf wkerhwr
                                 String[] tokens = str.split(" ", 3);
-                                String m = str.substring(tokens[1].length() + 4);
                                 server.sendPersonalMsg(this, tokens[1], tokens[2]);
+                            }
+                            if (str.startsWith("/putfile ")) { // /w nick3 lsdfhldf sdkfjhsdf wkerhwr
+                                String[] tokens = str.split(" ", 2);
+                                server.sentPersonalFile(this, tokens[1], fin);
                             }
                             if (str.startsWith("/blacklist ")) { // /blacklist nick3
                                 String[] tokens = str.split(" ");
@@ -139,6 +142,14 @@ public class ClientHandler {
                 catch (IOException exc) {
                     exc.printStackTrace();
                 }
+                finally {
+                    try {
+                        fin.close();
+                    }
+                    catch (IOException exc) {
+                        exc.printStackTrace();
+                    }
+                }
             }).start();
         } catch (IOException e) {
             e.printStackTrace();
@@ -153,8 +164,8 @@ public class ClientHandler {
         out.writeUTF(msg);
     }
 
-    public void sendFile(String msg) throws IOException {
-        out.writeUTF(msg);
+    public void sentPersonalFile( PipedInputStream fin) throws SQLException, IOException {
+            fin.connect(fout);
     }
 
     private void fillBroadcastMessagePane()  throws SQLException, IOException {

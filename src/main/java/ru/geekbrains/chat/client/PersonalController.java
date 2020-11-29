@@ -34,6 +34,13 @@ public class PersonalController {
     }
 
     public void buttonClickUpload() {
+        try {
+            out.writeUTF("/putfile " + nickTo);
+            textArea.clear();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         PipedOutputStream fout = ((MiniStage)btnUpload.getScene().getWindow()).fout;
 
         FileChooser fileChooser = new FileChooser();

@@ -1,6 +1,8 @@
 package ru.geekbrains.chat.server;
 
 import java.io.IOException;
+import java.io.PipedOutputStream;
+import java.io.PipedInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.*;
@@ -60,7 +62,7 @@ public class Server {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void logNewSessionId() {
 		try {
 			Statement stmt = this.connection.createStatement();
@@ -72,8 +74,7 @@ public class Server {
 			if (rs.next()) {
 				this.sessionId = rs.getInt(1);
 			}
-		}
-		catch (SQLException exc) {
+		} catch (SQLException exc) {
 			exc.printStackTrace();
 		}
 	}
@@ -81,9 +82,9 @@ public class Server {
 	public int logNewClientSessionId(String nickname) throws SQLException {
 		PreparedStatement ps;
 		ps = this.connection.prepareStatement(
-					"insert into main.user_session(server_session_id, nickname)\n" +
-							"values(?, ?);"
-			);
+				"insert into main.user_session(server_session_id, nickname)\n" +
+						"values(?, ?);"
+		);
 		ps.setInt(1, this.sessionId);
 		ps.setString(2, nickname);
 		ps.executeUpdate();
@@ -122,9 +123,9 @@ public class Server {
 		from.sendMsg("Клиент с ником " + nickTo + " не найден в чате");
 	}
 
-	public ResultSet getMessagesHistory (String nickname) throws SQLException {
+	public ResultSet getMessagesHistory(String nickname) throws SQLException {
 		PreparedStatement ps;
-		ps = this.connection.prepareStatement("select message from (\n"+
+		ps = this.connection.prepareStatement("select message from (\n" +
 				"select\n" +
 				"mb.message, mb.creation_time, us.nickname\n" +
 				"from main.user_session  as us\n" +
@@ -144,7 +145,7 @@ public class Server {
 		return ps.executeQuery();
 	}
 
-	public void broadcastMsg(ClientHandler from, String msg) throws SQLException,  IOException {
+	public void broadcastMsg(ClientHandler from, String msg) throws SQLException, IOException {
 		for (ClientHandler cl : clients) {
 			if (!cl.checkBlackList(from.getNick())) {
 				cl.sendMsg(msg);
@@ -152,13 +153,13 @@ public class Server {
 		}
 		PreparedStatement ps;
 		ps = this.connection.prepareStatement("insert into main.messages_broadcast(server_session_id, message)" +
-					"values(?, ?)");
+				"values(?, ?)");
 		ps.setInt(1, this.sessionId);
 		ps.setString(2, msg);
 		ps.executeUpdate();
 	}
-	
-	public ResultSet getBroadcastMessagesHistory (String nickname) throws SQLException {
+
+	public ResultSet getBroadcastMessagesHistory(String nickname) throws SQLException {
 		PreparedStatement ps;
 		ps = this.connection.prepareStatement("select\n" +
 				"mb.message\n" +
@@ -202,8 +203,14 @@ public class Server {
 		broadcastClientsList();
 	}
 
-	public void sentPersonalFile(ClientHandler from, String nickTo, String msg) throws SQLException, IOException {
+	public void sentPersonalFile(ClientHandler from, String nickTo, PipedInputStream fin) throws SQLException, IOException {
+		PipedOutputStream fout = new PipedOutputStream();
 		for (ClientHandler to : clients) {
 			if (to.getNick().equals(nickTo)) {
-
+				to.sentPersonalFile(fin);
 			}
+		}
+	}
+
+
+}

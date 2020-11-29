@@ -175,6 +175,18 @@ public class Controller implements Initializable {
                     e.printStackTrace();
                 } finally {
                     try {
+                        in.close();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        fin.close();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
                         socket.close();
                     } catch (IOException e) {
                         e.printStackTrace();
