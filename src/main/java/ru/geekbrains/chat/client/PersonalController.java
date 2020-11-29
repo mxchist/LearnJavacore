@@ -18,10 +18,10 @@ public class PersonalController {
     @FXML
     TextArea textArea;
 
-    DataOutputStream out = ((MiniStage)btnSent.getScene().getWindow()).out;
-    String nickTo = ((MiniStage)btnSent.getScene().getWindow()).nickTo;
-
     public void btnClick() {
+        DataOutputStream out = ((MiniStage)btnSent.getScene().getWindow()).out;
+        String nickTo = ((MiniStage)btnSent.getScene().getWindow()).nickTo;
+
         if(!((MiniStage)btnSent.getScene().getWindow()).parentList.contains(textArea)) {
             ((MiniStage)btnSent.getScene().getWindow()).parentList.add(textArea);
         }
@@ -34,6 +34,9 @@ public class PersonalController {
     }
 
     public void buttonClickUpload() {
+        DataOutputStream out = ((MiniStage)btnSent.getScene().getWindow()).out;
+        String nickTo = ((MiniStage)btnSent.getScene().getWindow()).nickTo;
+
         try {
             out.writeUTF("/putfile " + nickTo);
             textArea.clear();
