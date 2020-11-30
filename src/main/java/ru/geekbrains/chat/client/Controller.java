@@ -11,8 +11,6 @@ import javafx.stage.Stage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
@@ -67,9 +65,9 @@ public class Controller implements Initializable {
 
     Socket socket;
     DataInputStream in;
-    PipedInputStream fin;
+    DataInputStream fin;
     DataOutputStream out;
-    PipedOutputStream fout;
+    DataOutputStream fout;
 
     final String IP_ADDRESS = "localhost";
     final int PORT = 8189;

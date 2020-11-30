@@ -7,18 +7,16 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 import java.io.DataOutputStream;
-import java.io.PipedOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 
 public class MiniStage extends Stage {
     String nickTo;
     DataOutputStream out;
-    PipedOutputStream fout;
+    DataOutputStream fout;
     List<TextArea> parentList;
 
-    public MiniStage(String nickTo, DataOutputStream out, PipedOutputStream fout, List<TextArea> parentList) {
+    public MiniStage(String nickTo, DataOutputStream out, DataOutputStream fout, List<TextArea> parentList) {
         this.out = out;
         this.fout = fout;
         this.parentList = parentList;

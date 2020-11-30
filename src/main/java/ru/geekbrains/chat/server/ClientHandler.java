@@ -2,8 +2,6 @@ package ru.geekbrains.chat.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -16,9 +14,9 @@ public class ClientHandler {
     private Socket socket;
     private Socket fileSocket;
     private DataOutputStream out;
-    private PipedOutputStream fout;
+    private DataOutputStream fout;
     private DataInputStream in;
-    private PipedInputStream fin;
+    private DataInputStream fin;
     private String nick;
     private static int maxSessionId;
     private int sessionId;
@@ -37,8 +35,8 @@ public class ClientHandler {
 
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
-            this.fin = new PipedInputStream();
-            this.fout = new PipedOutputStream();
+            this.fin = new DataInputStream(fileSocket.getInputStream());
+            this.fout = new DataOutputStream(fileSocket.getOutputStream());
 
             this.blackList = new ArrayList<>();
             new Thread(() -> {
@@ -96,7 +94,7 @@ public class ClientHandler {
                             }
                             if (str.startsWith("/putfile ")) { // /w nick3 lsdfhldf sdkfjhsdf wkerhwr
                                 String[] tokens = str.split(" ", 2);
-                                server.sentPersonalFile(this, tokens[1], fin);
+//                                server.sentPersonalFile(this, tokens[1], fin);
                             }
                             if (str.startsWith("/blacklist ")) { // /blacklist nick3
                                 String[] tokens = str.split(" ");
@@ -127,6 +125,11 @@ public class ClientHandler {
                         e.printStackTrace();
                     }
                     try {
+                        fileSocket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
                         server.unsubscribe(this);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -134,37 +137,32 @@ public class ClientHandler {
                 }
             }).start();
 
-            //поток отвечающий за обмен файлами
-            new Thread( () -> {
-                DataInputStream dfin = null;
-                try {
-                    dfin = new DataInputStream(fileSocket.getInputStream());
-                    byte b[];
-                    try {
-                        b = new byte[fin.available()];
-                        fin.read(b);
-                    } catch (IOException exc) {
-                        exc.printStackTrace();
-                    } finally {
-                        try {
-                            fin.close();
-                        } catch (IOException exc) {
-                            exc.printStackTrace();
-                        }
-                    }
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-                finally {
-                    try {
-                        dfin.close();
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+//            //поток отвечающий за обмен файлами
+//            new Thread( () -> {
+//                try {
+//                    byte b[];                                   // буфер для обмена файлом
+//                    try {
+//                        b = new byte[fin.available()];
+//                        fin.read(b);                           // считываем в буфер данные из сокета
+//                        fout.write(b);                          //
+//                    } catch (IOException exc) {
+//                        exc.printStackTrace();
+//                    }
+//                }
+//                finally {
+//                    try {
+//                        fin.close();
+//                    } catch (IOException exc) {
+//                        exc.printStackTrace();
+//                    }
+//                    try {
+//                        fin.close();
+//                    }
+//                    catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }).start();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -179,9 +177,9 @@ public class ClientHandler {
         out.writeUTF(msg);
     }
 
-    public void sentPersonalFile( PipedInputStream fin) throws SQLException, IOException {
-            fin.connect(fout);
-    }
+//    public void sentPersonalFile( DataInputStream fin) throws SQLException, IOException {
+//            fin.connect(fout);
+//    }
 
     private void fillBroadcastMessagePane()  throws SQLException, IOException {
         ResultSet rs = server.getBroadcastMessagesHistory(nick);

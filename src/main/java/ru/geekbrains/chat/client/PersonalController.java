@@ -1,13 +1,11 @@
 package ru.geekbrains.chat.client;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 
 import java.io.*;
-import java.lang.Thread;
 public class PersonalController {
     @FXML
     Button btnSent;
@@ -37,30 +35,39 @@ public class PersonalController {
         DataOutputStream out = ((MiniStage)btnSent.getScene().getWindow()).out;
         String nickTo = ((MiniStage)btnSent.getScene().getWindow()).nickTo;
 
-        try {
-            out.writeUTF("/putfile " + nickTo);
-            textArea.clear();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            out.writeUTF("/putfile " + nickTo);
+//            textArea.clear();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        PipedOutputStream fout = ((MiniStage)btnUpload.getScene().getWindow()).fout;
+        DataOutputStream fout = ((MiniStage)btnUpload.getScene().getWindow()).fout;
 
         FileChooser fileChooser = new FileChooser();
         File fileToUpload = fileChooser.showOpenDialog((MiniStage)btnUpload.getScene().getWindow());
         try (FileInputStream fis = new FileInputStream(fileToUpload)) {
-                byte b[];
-                try {
-                    b = new byte[fis.available()];
-                        fout.write(b);
-                        out.writeUTF("/putFile " + nickTo);
-                }
-                catch (IOException exc) {
-                    exc.printStackTrace();
-                }
+            byte b[];
+                b = new byte[fis.available()];
+                    fout.write(b);
+                    out.writeUTF("/putFile " + nickTo);
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+        finally {
+            try {
+                fout.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

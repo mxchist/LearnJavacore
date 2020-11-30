@@ -25,7 +25,7 @@ public class DownloadController {
     TextArea messageText;
 
     public void acceptDownloading() {
-        PipedInputStream fin = ((FileDownloadStage)yes.getScene().getWindow()).fin;
+        DataInputStream fin = ((FileDownloadStage)yes.getScene().getWindow()).fin;
 
         FileChooser fileChooser = new FileChooser();
         File fileToDownload = fileChooser.showOpenDialog(yes.getScene().getWindow());
