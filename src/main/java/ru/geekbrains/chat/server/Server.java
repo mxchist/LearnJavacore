@@ -22,6 +22,7 @@ public class Server {
 		ServerSocket server = null;
 		ServerSocket fileServer = null;
 		Socket socket = null;
+		Socket fileSocket = null;
 		try {
 			connect();
 //			AuthService authService = new AuthService(this.connection);
@@ -31,8 +32,9 @@ public class Server {
 			logNewSessionId();
 			while (true) {
 				socket = server.accept();
+				fileSocket = fileServer.accept();
 				System.out.println("Клиент подключился");
-				new ClientHandler(this, socket);
+				new ClientHandler(this, socket, fileSocket);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -209,10 +211,9 @@ public class Server {
 	}
 
 	public void sentPersonalFile(ClientHandler from, String nickTo, PipedInputStream fin) throws SQLException, IOException {
-		PipedOutputStream fout = new PipedOutputStream();
 		for (ClientHandler to : clients) {
 			if (to.getNick().equals(nickTo)) {
-				to.sentPersonalFile(fin);
+//				to.sentPersonalFile(fin);
 			}
 		}
 	}
