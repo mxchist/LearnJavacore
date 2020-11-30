@@ -14,6 +14,7 @@ import java.util.List;
 public class ClientHandler {
     private Server server;
     private Socket socket;
+    private Socket fileSocket;
     private DataOutputStream out;
     private PipedOutputStream fout;
     private DataInputStream in;
@@ -28,10 +29,11 @@ public class ClientHandler {
         return nick;
     }
 
-    public ClientHandler(Server server, Socket socket) {
+    public ClientHandler(Server server, Socket socket, Socket fileSocket) {
         try {
             this.socket = socket;
             this.server = server;
+            this.fileSocket = fileSocket;
 
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
@@ -134,23 +136,36 @@ public class ClientHandler {
 
             //поток отвечающий за обмен файлами
             new Thread( () -> {
-                byte b[];
+                DataInputStream dfin = null;
                 try {
-                    b = new byte[fin.available()];
-                    fin.read(b);
+                    dfin = new DataInputStream(fileSocket.getInputStream());
+                    byte b[];
+                    try {
+                        b = new byte[fin.available()];
+                        fin.read(b);
+                    } catch (IOException exc) {
+                        exc.printStackTrace();
+                    } finally {
+                        try {
+                            fin.close();
+                        } catch (IOException exc) {
+                            exc.printStackTrace();
+                        }
+                    }
                 }
-                catch (IOException exc) {
-                    exc.printStackTrace();
+                catch (IOException e) {
+                    e.printStackTrace();
                 }
                 finally {
                     try {
-                        fin.close();
+                        dfin.close();
                     }
-                    catch (IOException exc) {
-                        exc.printStackTrace();
+                    catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }).start();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

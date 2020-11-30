@@ -12,16 +12,21 @@ public class Server {
 	private Vector<ClientHandler> clients;
 	public Connection connection;
 
+	private final int SERVER_PORT = 8189;
+	private final int FILE_SERVER_PORT = 8190;
+
 	private int sessionId;
 
 	public Server() {
 		clients = new Vector<>();
 		ServerSocket server = null;
+		ServerSocket fileServer = null;
 		Socket socket = null;
 		try {
 			connect();
 //			AuthService authService = new AuthService(this.connection);
-			server = new ServerSocket(8189);
+			server = new ServerSocket(SERVER_PORT);
+			fileServer = new ServerSocket(FILE_SERVER_PORT);
 			System.out.println("Сервер запущен. Ожидаем клиентов...");
 			logNewSessionId();
 			while (true) {
