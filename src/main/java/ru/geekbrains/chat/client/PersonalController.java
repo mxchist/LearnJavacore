@@ -3,6 +3,7 @@ package ru.geekbrains.chat.client;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
 import java.io.*;
@@ -16,6 +17,9 @@ public class PersonalController {
     @FXML
     TextArea textArea;
 
+    @FXML
+    TextField msgField;
+
     public void btnClick() {
         DataOutputStream out = ((MiniStage)btnSent.getScene().getWindow()).out;
         String nickTo = ((MiniStage)btnSent.getScene().getWindow()).nickTo;
@@ -24,8 +28,8 @@ public class PersonalController {
             ((MiniStage)btnSent.getScene().getWindow()).parentList.add(textArea);
         }
         try {
-            out.writeUTF("/w " + nickTo + " " + textArea.getText());
-            textArea.clear();
+            out.writeUTF("/w " + nickTo + " " + msgField.getText());
+            msgField.clear();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,12 +49,12 @@ public class PersonalController {
         DataOutputStream fout = ((MiniStage)btnUpload.getScene().getWindow()).fout;
 
         FileChooser fileChooser = new FileChooser();
-        File fileToUpload = fileChooser.showOpenDialog((MiniStage)btnUpload.getScene().getWindow());
+        File fileToUpload = fileChooser.showOpenDialog(btnUpload.getScene().getWindow());
         try (FileInputStream fis = new FileInputStream(fileToUpload)) {
             byte b[];
                 b = new byte[fis.available()];
                     fout.write(b);
-                    out.writeUTF("/putFile " + nickTo);
+                    //out.writeUTF("/putFile " + nickTo);
         }
         catch (IOException e) {
             e.printStackTrace();
