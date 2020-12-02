@@ -76,7 +76,7 @@ public class Controller implements Initializable {
 
     private boolean isAuthorized;
 
-    List<TextArea> textAreas;
+    ArrayList<TextArea> textAreas;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

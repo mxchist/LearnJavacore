@@ -8,15 +8,15 @@ import javafx.stage.Stage;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 public class MiniStage extends Stage {
     String nickTo;
     DataOutputStream out;
     DataOutputStream fout;
-    List<TextArea> parentList;
+    ArrayList<TextArea> parentList;
 
-    public MiniStage(String nickTo, DataOutputStream out, DataOutputStream fout, List<TextArea> parentList) {
+    public MiniStage(String nickTo, DataOutputStream out, DataOutputStream fout, ArrayList<TextArea> parentList) {
         this.nickTo = nickTo;
         this.out = out;
         this.fout = fout;

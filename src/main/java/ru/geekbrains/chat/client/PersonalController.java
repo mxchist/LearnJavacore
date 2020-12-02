@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
 import java.io.*;
+
 public class PersonalController {
     @FXML
     Button btnSent;
@@ -20,12 +21,23 @@ public class PersonalController {
     @FXML
     TextField msgField;
 
+
+//    public PersonalController() {
+//        super();
+//        textArea = new TextArea();
+////        for (TextArea t: ((MiniStage)textArea.getScene().getWindow()).parentList ) {
+////            textArea.appendText(t.getText());
+////        }
+//    }
+
     public void btnClick() {
         DataOutputStream out = ((MiniStage)btnSent.getScene().getWindow()).out;
         String nickTo = ((MiniStage)btnSent.getScene().getWindow()).nickTo;
 
-        if(!((MiniStage)btnSent.getScene().getWindow()).parentList.contains(textArea)) {
-            ((MiniStage)btnSent.getScene().getWindow()).parentList.add(textArea);
+        TextArea newTextAera =  new TextArea(msgField.getText());
+        if ( !( (MiniStage)btnSent.getScene().getWindow() ).parentList.contains(newTextAera)) {
+            ((MiniStage)btnSent.getScene().getWindow()).parentList.add(newTextAera);
+            this.textArea.appendText( msgField.getText());
         }
         try {
             out.writeUTF("/w " + nickTo + " " + msgField.getText());
@@ -36,8 +48,8 @@ public class PersonalController {
     }
 
     public void buttonClickUpload() {
-        DataOutputStream out = ((MiniStage)btnSent.getScene().getWindow()).out;
-        String nickTo = ((MiniStage)btnSent.getScene().getWindow()).nickTo;
+        DataOutputStream out = ((MiniStage)btnUpload.getScene().getWindow()).out;
+        String nickTo = ((MiniStage)btnUpload.getScene().getWindow()).nickTo;
 
 //        try {
 //            out.writeUTF("/putfile " + nickTo);
@@ -54,24 +66,10 @@ public class PersonalController {
             byte b[];
                 b = new byte[fis.available()];
                     fout.write(b);
-                    //out.writeUTF("/putFile " + nickTo);
+                    out.writeUTF("/putFile " + nickTo);
         }
         catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
-            try {
-                fout.close();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                out.close();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
