@@ -29,8 +29,8 @@ public class ClientHandler {
 
     public ClientHandler(Server server, Socket socket, Socket fileSocket) {
         try {
-            this.socket = socket;
             this.server = server;
+            this.socket = socket;
             this.fileSocket = fileSocket;
 
             this.in = new DataInputStream(socket.getInputStream());

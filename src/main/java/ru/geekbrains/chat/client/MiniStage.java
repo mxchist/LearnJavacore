@@ -17,6 +17,7 @@ public class MiniStage extends Stage {
     List<TextArea> parentList;
 
     public MiniStage(String nickTo, DataOutputStream out, DataOutputStream fout, List<TextArea> parentList) {
+        this.nickTo = nickTo;
         this.out = out;
         this.fout = fout;
         this.parentList = parentList;

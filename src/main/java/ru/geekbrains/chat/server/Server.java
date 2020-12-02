@@ -49,6 +49,16 @@ public class Server {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			try {
+				fileSocket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				fileServer.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			disconnect();
 		}
 	}

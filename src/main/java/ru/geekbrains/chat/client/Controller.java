@@ -64,13 +64,15 @@ public class Controller implements Initializable {
     }
 
     Socket socket;
+    Socket fileSocket;
     DataInputStream in;
     DataInputStream fin;
     DataOutputStream out;
     DataOutputStream fout;
 
     final String IP_ADDRESS = "localhost";
-    final int PORT = 8189;
+    private final int SERVER_PORT = 8189;
+    private final int FILE_SERVER_PORT = 8190;
 
     private boolean isAuthorized;
 
@@ -126,9 +128,13 @@ public class Controller implements Initializable {
     public void connect() {
         try {
             userName.setText("test");
-            socket = new Socket(IP_ADDRESS, PORT);
+            socket = new Socket(IP_ADDRESS, SERVER_PORT);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
+
+            fileSocket = new Socket(IP_ADDRESS, FILE_SERVER_PORT);
+            fin = new DataInputStream(fileSocket.getInputStream());
+            fout = new DataOutputStream(fileSocket.getOutputStream());
             setAuthorized(false);
             Thread thread = new Thread(() -> {
                 try {
