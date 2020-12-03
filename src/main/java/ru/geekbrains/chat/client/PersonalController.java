@@ -45,6 +45,7 @@ public class PersonalController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void buttonClickUpload() {
@@ -65,8 +66,9 @@ public class PersonalController {
         try (FileInputStream fis = new FileInputStream(fileToUpload)) {
             byte b[];
                 b = new byte[fis.available()];
-                    fout.write(b);
-                    out.writeUTF("/putFile " + nickTo);
+                fis.read(b);
+                fout.write(b);
+                out.writeUTF("/putFile " + nickTo);
         }
         catch (IOException e) {
             e.printStackTrace();

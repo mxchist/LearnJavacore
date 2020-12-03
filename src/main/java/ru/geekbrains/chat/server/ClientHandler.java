@@ -92,9 +92,9 @@ public class ClientHandler {
                                 String[] tokens = str.split(" ", 3);
                                 server.sendPersonalMsg(this, tokens[1], tokens[2]);
                             }
-                            if (str.startsWith("/putfile ")) { // /w nick3 lsdfhldf sdkfjhsdf wkerhwr
+                            if (str.startsWith("/putFile ")) { // /w nick3 lsdfhldf sdkfjhsdf wkerhwr
                                 String[] tokens = str.split(" ", 2);
-//                                server.sentPersonalFile(this, tokens[1], fin);
+                                sentPersonalFile( tokens[1]);
                             }
                             if (str.startsWith("/blacklist ")) { // /blacklist nick3
                                 String[] tokens = str.split(" ");
@@ -172,7 +172,30 @@ public class ClientHandler {
         out.writeUTF(msg);
     }
 
-    public void sentPersonalFile( byte[] file) throws SQLException, IOException {
+    public void sentPersonalFile( String nickto) throws IOException {
+        new Thread( () -> {
+            try {
+                byte b[];                                   // буфер для обмена файлом
+                try {
+                    b = new byte[fin.available()];
+                    fin.read(b);                           // считываем в буфер данные из сокета
+                    server.sentPersonalFile(nickto, b);                          //
+                } catch (IOException exc) {
+                    exc.printStackTrace();
+                }
+            }
+            finally {
+                try {
+                    fin.close();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public void sentFile( byte[] file) {
         try {
             out.write(file);
         }

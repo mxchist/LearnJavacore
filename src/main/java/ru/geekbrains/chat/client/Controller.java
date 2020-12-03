@@ -195,6 +195,23 @@ public class Controller implements Initializable {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    try {
+                        fileSocket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        out.close();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        fout.close();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     setAuthorized(false);
                 }
             });
