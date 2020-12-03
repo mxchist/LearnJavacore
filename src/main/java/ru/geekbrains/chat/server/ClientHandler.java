@@ -137,32 +137,27 @@ public class ClientHandler {
                 }
             }).start();
 
-//            //поток отвечающий за обмен файлами
-//            new Thread( () -> {
-//                try {
-//                    byte b[];                                   // буфер для обмена файлом
-//                    try {
-//                        b = new byte[fin.available()];
-//                        fin.read(b);                           // считываем в буфер данные из сокета
-//                        fout.write(b);                          //
-//                    } catch (IOException exc) {
-//                        exc.printStackTrace();
-//                    }
-//                }
-//                finally {
-//                    try {
-//                        fin.close();
-//                    } catch (IOException exc) {
-//                        exc.printStackTrace();
-//                    }
-//                    try {
-//                        fin.close();
-//                    }
-//                    catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }).start();
+            //поток отвечающий за обмен файлами
+            new Thread( () -> {
+                try {
+                    byte b[];                                   // буфер для обмена файлом
+                    try {
+                        b = new byte[fin.available()];
+                        fin.read(b);                           // считываем в буфер данные из сокета
+                        fout.write(b);                          //
+                    } catch (IOException exc) {
+                        exc.printStackTrace();
+                    }
+                }
+                finally {
+                    try {
+                        fin.close();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -177,9 +172,14 @@ public class ClientHandler {
         out.writeUTF(msg);
     }
 
-//    public void sentPersonalFile( DataInputStream fin) throws SQLException, IOException {
-//            fin.connect(fout);
-//    }
+    public void sentPersonalFile( byte[] file) throws SQLException, IOException {
+        try {
+            out.write(file);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void fillBroadcastMessagePane()  throws SQLException, IOException {
         ResultSet rs = server.getBroadcastMessagesHistory(nick);

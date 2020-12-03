@@ -1,8 +1,6 @@
 package ru.geekbrains.chat.server;
 
 import java.io.IOException;
-import java.io.PipedOutputStream;
-import java.io.PipedInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.*;
@@ -220,10 +218,11 @@ public class Server {
 		broadcastClientsList();
 	}
 
-	public void sentPersonalFile(ClientHandler from, String nickTo, PipedInputStream fin) throws SQLException, IOException {
+	public void sentPersonalFile(String nickTo, byte[] file) throws SQLException, IOException {
 		for (ClientHandler to : clients) {
 			if (to.getNick().equals(nickTo)) {
-//				to.sentPersonalFile(fin);
+				to.sendMsg("/putFile");
+				to.sentPersonalFile(file);
 			}
 		}
 	}
