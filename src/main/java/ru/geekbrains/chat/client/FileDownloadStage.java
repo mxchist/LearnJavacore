@@ -18,7 +18,7 @@ public class FileDownloadStage extends Stage {
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getResource("/fxml/fileDownload.fxml"));
-            setTitle("Downloading file from " + nickFrom);
+            setTitle("File from " + nickFrom);
             Scene scene = new Scene(root, 200, 100);
             setScene(scene);
 

@@ -43,9 +43,10 @@ public class DownloadController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        ((FileDownloadStage) yes.getScene().getWindow()).close();
     }
 
     public void rejectDownloading() {
-        Platform.exit();
+        ((FileDownloadStage)no.getScene().getWindow()).close();
     }
 }
