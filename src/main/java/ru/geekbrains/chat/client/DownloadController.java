@@ -28,7 +28,7 @@ public class DownloadController {
         DataInputStream fin = ((FileDownloadStage)yes.getScene().getWindow()).fin;
 
         FileChooser fileChooser = new FileChooser();
-        File fileToDownload = fileChooser.showOpenDialog(yes.getScene().getWindow());
+        File fileToDownload = fileChooser.showSaveDialog(yes.getScene().getWindow());
         try (FileOutputStream fos = new FileOutputStream(fileToDownload)) {
                 byte[] b;
                 try {
