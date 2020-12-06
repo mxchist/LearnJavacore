@@ -6,4 +6,5 @@ target/maven-status/maven-compiler-plugin/compile/default-compile/
 workspace.xml
 users*.db
 backend_DB.db
+.idea/misc.xml
 
