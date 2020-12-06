@@ -199,7 +199,7 @@ public class ClientHandler {
 
     public void sentFile( byte[] file) {
         try {
-            out.write(file);
+            fout.write(file);
         }
         catch (IOException e) {
             e.printStackTrace();
