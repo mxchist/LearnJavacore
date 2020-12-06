@@ -94,7 +94,7 @@ public class ClientHandler {
                             }
                             if (str.startsWith("/putFile")) { // /w nick3 lsdfhldf sdkfjhsdf wkerhwr
                                 String[] tokens = str.split(" ", 2);
-                                sentPersonalFile(nick, tokens[1]);
+                                sentPersonalFile(tokens[1]);
                             }
                             if (str.startsWith("/blacklist ")) { // /blacklist nick3
                                 String[] tokens = str.split(" ");
@@ -174,7 +174,7 @@ public class ClientHandler {
         out.writeUTF(msg);
     }
 
-    public void sentPersonalFile(String nickFrom, String nickto) throws IOException {
+    public void sentPersonalFile(String nickto) throws IOException {
         new Thread( () -> {
             try {
                 byte b[];                                   // буфер для обмена файлом
@@ -199,7 +199,7 @@ public class ClientHandler {
 
     public void sentFile( byte[] file) {
         try {
-            out.write(file);
+            fout.write(file);
         }
         catch (IOException e) {
             e.printStackTrace();
