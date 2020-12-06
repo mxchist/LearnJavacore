@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Byte;
+import java.util.ArrayList;
 
 public class ClientHandler {
     private Server server;
