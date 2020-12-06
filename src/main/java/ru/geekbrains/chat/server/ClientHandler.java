@@ -137,6 +137,7 @@ public class ClientHandler {
                 }
             }).start();
 
+            /*
             //поток отвечающий за обмен файлами
             new Thread( () -> {
                 try {
@@ -158,6 +159,7 @@ public class ClientHandler {
                     }
                 }
             }).start();
+             */
 
         } catch (IOException e) {
             e.printStackTrace();
