@@ -171,6 +171,8 @@ public class Controller implements Initializable {
                             Platform.runLater( () -> {
                                 FileDownloadStage fds = new FileDownloadStage(tokens[1], fin);
                                 fds.show();
+                                fds.requestFocus();
+                                fds.setAlwaysOnTop(true);
                             });
                         }
                         else {
