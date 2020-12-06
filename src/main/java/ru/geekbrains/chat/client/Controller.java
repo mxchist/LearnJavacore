@@ -167,9 +167,11 @@ public class Controller implements Initializable {
                             }
                         }
                         if (str.startsWith("/putFile")) {
-                            String[] tokens = str.split(" ");
-                            FileDownloadStage fds = new FileDownloadStage(tokens[1], fin);
-                            fds.show();
+                            final String[] tokens = str.split(" ");
+                            Platform.runLater( () -> {
+                                FileDownloadStage fds = new FileDownloadStage(tokens[1], fin);
+                                fds.show();
+                            });
                         }
                         else {
                             chatArea.appendText(str + "\n");
