@@ -62,7 +62,7 @@
         </dependency>
     </dependencies>
 
-
+    <!--
     <distributionManagement>
         <repository>
             <id>nexus</id>
@@ -70,5 +70,6 @@
             <url>http://admin:admin123@localhost:8081/repository/simpleFXMLapp/</url>
         </repository>
     </distributionManagement>
+    -->
 
 </project>
