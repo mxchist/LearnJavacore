@@ -174,14 +174,27 @@ public class ClientHandler {
         out.writeUTF(msg);
     }
 
-    public void sentPersonalFile(String nickto) throws IOException {
+    public void sentPersonalFile(String nickto) {
         new Thread( () -> {
             try {
-                byte b[];                                   // буфер для обмена файлом
+                byte[] b;
+                int bLen;
+                ArrayList<Byte> bFull = new ArrayList<Byte>();
                 try {
-                    b = new byte[fin.available()];
-                    fin.read(b);                           // считываем в буфер данные из сокета
-                    server.sentPersonalFile(nick, nickto, b);                          //
+                    while ((bLen = fin.available()) > 0) {
+                        b = new byte[bLen];                                // буфер для обмена файлом
+                        fin.read(b);         // считываем в буфер данные из сокета
+                        bFull.ensureCapacity(bFull.size() + bLen);
+                        for (byte b1 : b) {
+                            bFull.add(b1);
+                        }
+                    }
+                    bLen = bFull.size();
+                    b = new byte[bLen];
+                    for (int n = 0; n < bFull.size(); n++) {
+                        b[n] = bFull.get(n);
+                    }
+                    server.sentPersonalFile(nick, nickto, b);
                 } catch (IOException exc) {
                     exc.printStackTrace();
                 }
