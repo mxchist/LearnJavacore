@@ -218,10 +218,10 @@ public class Server {
 		broadcastClientsList();
 	}
 
-	public void sentPersonalFile(String nickTo, byte[] file) throws IOException {
+	public void sentPersonalFile(String nickFrom, String nickTo, byte[] file) throws IOException {
 		for (ClientHandler to : clients) {
 			if (to.getNick().equals(nickTo)) {
-				to.sendMsg("/putFile");
+				to.sendMsg("/putFile " + nickFrom);
 				to.sentFile(file);
 			}
 		}
