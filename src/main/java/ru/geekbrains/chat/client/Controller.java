@@ -133,8 +133,6 @@ public class Controller implements Initializable {
             out = new DataOutputStream(socket.getOutputStream());
 
             fileSocket = new Socket(IP_ADDRESS, FILE_SERVER_PORT);
-            fin = new DataInputStream(fileSocket.getInputStream());
-            fout = new DataOutputStream(fileSocket.getOutputStream());
             setAuthorized(false);
             Thread thread = new Thread(() -> {
                 try {
@@ -167,6 +165,7 @@ public class Controller implements Initializable {
                             }
                         }
                         if (str.startsWith("/putFile")) {
+                            fin = new DataInputStream(fileSocket.getInputStream());
                             final String[] tokens = str.split(" ");
                             Platform.runLater( () -> {
                                 FileDownloadStage fds = new FileDownloadStage(tokens[1], fin);
@@ -270,8 +269,9 @@ public class Controller implements Initializable {
         }
     }
 
-    public void selectClient(MouseEvent mouseEvent) {
+    public void selectClient(MouseEvent mouseEvent) throws IOException {
         if(mouseEvent.getClickCount() == 2) {
+            fout = new DataOutputStream(fileSocket.getOutputStream());
             String selectedItem = clientsList.getSelectionModel().getSelectedItem();
             MiniStage ms = new MiniStage(selectedItem, out, fout, textAreas);
             ms.show();

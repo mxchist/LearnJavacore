@@ -127,6 +127,16 @@ public class ClientHandler {
                         e.printStackTrace();
                     }
                     try {
+                        fin.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        fout.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
                         fileSocket.close();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -215,6 +225,8 @@ public class ClientHandler {
     public void sentFile( byte[] file) {
         try {
             fout.write(file);
+            fout.flush();
+            fout.
         }
         catch (IOException e) {
             e.printStackTrace();

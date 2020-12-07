@@ -68,10 +68,18 @@ public class PersonalController {
                 b = new byte[fis.available()];
                 fis.read(b);
                 fout.write(b);
+//                fout.flush();
                 out.writeUTF("/putFile " + nickTo);
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+        finally {
+            try {
+                fout.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
