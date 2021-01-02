@@ -21,9 +21,10 @@ public class main {
 
 		exercise1();
 		exercise2();
-//		exercise3();
-//		exercise3_slow1();
+		exercise3();
+		exercise3_slow1();
 		exercise3_slow2();
+		exercise5();
 	}
 
 	private static void exercise1() {
@@ -211,6 +212,21 @@ public class main {
 		}
 
 		out.println();
+	}
+
+	private static void exercise5 () {
+		//Прочитать содержимое файла в обратном порядке
+		try (RandomAccessFile raf = new RandomAccessFile("file100b1", "r")) {
+			long n = raf.length();
+			while (n >= 0) {
+				raf.seek(n--);
+				out.print((char)raf.read());
+			}
+		} catch (FileNotFoundException exc) {
+			exc.printStackTrace();
+		} catch (IOException exc) {
+			exc.printStackTrace();
+		}
 	}
 
 }
